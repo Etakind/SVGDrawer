@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "version": 1,
+  "description": "A compact cloud silhouette.",
+  "tags": [
+    "cloud",
+    "deployment"
+  ],
+  "defaults": {
+    "fill": "#DCEBFF",
+    "accent": "#2878D4",
+    "stroke": "#193E5B",
+    "highlight": "#FFFFFF",
+    "stroke_width": 5,
+    "radius": 7
+  },
+  "controls": [],
+  "order": 100
+}

@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "version": 1,
+  "description": "Circular arrow segments with adjustable sweep and direction.",
+  "tags": [
+    "refresh",
+    "cycle",
+    "arrows",
+    "reload"
+  ],
+  "order": 60,
+  "defaults": {
+    "fill": "#DCEBFF",
+    "accent": "#226BB1",
+    "stroke": "#193E5B",
+    "highlight": "#FFFFFF",
+    "stroke_width": 5,
+    "radius": 7,
+    "arrows": 2,
+    "sweep": 78,
+    "ring_radius": 78,
+    "arrow_weight": 10,
+    "head_size": 25,
+    "clockwise": true
+  },
+  "controls": [
+    {
+      "key": "arrows",
+      "label": "Arrow count",
+      "type": "number",
+      "default": 2,
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "unit": ""
+    },
+    {
+      "key": "sweep",
+      "label": "Arc coverage",
+      "type": "number",
+      "default": 78,
+      "min": 40,
+      "max": 90,
+      "step": 1,
+      "unit": "%"
+    },
+    {
+      "key": "ring_radius",
+      "label": "Circle radius",
+      "type": "number",
+      "default": 78,
+      "min": 47,
+      "max": 91,
+      "step": 1,
+      "unit": "u"
+    },
+    {
+      "key": "arrow_weight",
+      "label": "Arrow thickness",
+      "type": "number",
+      "default": 10,
+      "min": 3,
+      "max": 20,
+      "step": 1,
+      "unit": "u"
+    },
+    {
+      "key": "head_size",
+      "label": "Arrowhead size",
+      "type": "number",
+      "default": 25,
+      "min": 12,
+      "max": 34,
+      "step": 1,
+      "unit": "u"
+    },
+    {
+      "key": "clockwise",
+      "label": "Clockwise",
+      "type": "boolean",
+      "default": true
+    }
+  ]
+}

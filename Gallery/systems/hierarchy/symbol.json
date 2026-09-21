@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "version": 1,
+  "description": "A branching hierarchy with editable nodes and connectors.",
+  "tags": [
+    "organization",
+    "tree",
+    "network",
+    "nodes"
+  ],
+  "order": 100,
+  "defaults": {
+    "fill": "#DCEBFF",
+    "accent": "#2878D4",
+    "stroke": "#193E5B",
+    "highlight": "#FFFFFF",
+    "stroke_width": 5,
+    "radius": 7,
+    "branches": 3,
+    "levels": 2,
+    "node_width": 43,
+    "node_height": 30,
+    "connector_width": 4,
+    "frame": true
+  },
+  "controls": [
+    {
+      "key": "branches",
+      "label": "Children per node",
+      "type": "number",
+      "default": 3,
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "unit": ""
+    },
+    {
+      "key": "levels",
+      "label": "Levels",
+      "type": "number",
+      "default": 2,
+      "min": 2,
+      "max": 3,
+      "step": 1,
+      "unit": ""
+    },
+    {
+      "key": "node_width",
+      "label": "Node width",
+      "type": "number",
+      "default": 43,
+      "min": 16,
+      "max": 55,
+      "step": 1,
+      "unit": "u"
+    },
+    {
+      "key": "node_height",
+      "label": "Node height",
+      "type": "number",
+      "default": 30,
+      "min": 12,
+      "max": 40,
+      "step": 1,
+      "unit": "u"
+    },
+    {
+      "key": "connector_width",
+      "label": "Connector thickness",
+      "type": "number",
+      "default": 4,
+      "min": 1,
+      "max": 9,
+      "step": 1,
+      "unit": "u"
+    },
+    {
+      "key": "frame",
+      "label": "Outer frame",
+      "type": "boolean",
+      "default": true
+    }
+  ]
+}

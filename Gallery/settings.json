@@ -1,0 +1,8 @@
+{
+  "schema_version": 1,
+  "app_version": "3.0.0",
+  "title": "SVGDrawer",
+  "design_size": 256,
+  "pyodide_base": "https://cdn.jsdelivr.net/pyodide/v314.0.7/full/",
+  "gallery_name": "Gallery"
+}

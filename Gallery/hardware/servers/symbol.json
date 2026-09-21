@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "version": 1,
+  "description": "A bank of dimensional racks with bays and status lights.",
+  "tags": [
+    "server",
+    "rack",
+    "datacenter",
+    "hosting"
+  ],
+  "order": 120,
+  "defaults": {
+    "fill": "#273948",
+    "accent": "#2C759C",
+    "stroke": "#17232E",
+    "highlight": "#839CAB",
+    "stroke_width": 5,
+    "radius": 7,
+    "racks": 5,
+    "slots": 7,
+    "bay_height": 10,
+    "depth": 11,
+    "lights": 1,
+    "arrows": true
+  },
+  "controls": [
+    {
+      "key": "racks",
+      "label": "Rack count",
+      "type": "number",
+      "default": 5,
+      "min": 1,
+      "max": 7,
+      "step": 1,
+      "unit": ""
+    },
+    {
+      "key": "slots",
+      "label": "Bays per rack",
+      "type": "number",
+      "default": 7,
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "unit": ""
+    },
+    {
+      "key": "bay_height",
+      "label": "Bay height",
+      "type": "number",
+      "default": 10,
+      "min": 3,
+      "max": 18,
+      "step": 1,
+      "unit": "u"
+    },
+    {
+      "key": "depth",
+      "label": "Side depth",
+      "type": "number",
+      "default": 11,
+      "min": 3,
+      "max": 24,
+      "step": 1,
+      "unit": "u"
+    },
+    {
+      "key": "lights",
+      "label": "Lights per bay",
+      "type": "number",
+      "default": 1,
+      "min": 0,
+      "max": 4,
+      "step": 1,
+      "unit": ""
+    },
+    {
+      "key": "arrows",
+      "label": "Top arrows",
+      "type": "boolean",
+      "default": true
+    }
+  ]
+}

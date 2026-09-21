@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "version": 1,
+  "description": "An adjustable display, bezel, keyboard and laptop base.",
+  "tags": [
+    "computer",
+    "display",
+    "notebook"
+  ],
+  "order": 110,
+  "defaults": {
+    "fill": "#A8DDF6",
+    "accent": "#75BADD",
+    "stroke": "#213644",
+    "highlight": "#DEE9ED",
+    "stroke_width": 5,
+    "radius": 7,
+    "screen_width": 185,
+    "screen_height": 126,
+    "bezel": 7,
+    "base_depth": 24,
+    "key_rows": 2
+  },
+  "controls": [
+    {
+      "key": "screen_width",
+      "label": "Screen width",
+      "type": "number",
+      "default": 185,
+      "min": 145,
+      "max": 211,
+      "step": 1,
+      "unit": "u"
+    },
+    {
+      "key": "screen_height",
+      "label": "Screen height",
+      "type": "number",
+      "default": 126,
+      "min": 83,
+      "max": 149,
+      "step": 1,
+      "unit": "u"
+    },
+    {
+      "key": "bezel",
+      "label": "Bezel width",
+      "type": "number",
+      "default": 7,
+      "min": 3,
+      "max": 13,
+      "step": 1,
+      "unit": "u"
+    },
+    {
+      "key": "base_depth",
+      "label": "Base depth",
+      "type": "number",
+      "default": 24,
+      "min": 14,
+      "max": 34,
+      "step": 1,
+      "unit": "u"
+    },
+    {
+      "key": "key_rows",
+      "label": "Keyboard rows",
+      "type": "number",
+      "default": 2,
+      "min": 0,
+      "max": 4,
+      "step": 1,
+      "unit": ""
+    }
+  ]
+}

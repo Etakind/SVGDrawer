@@ -1,0 +1,149 @@
+{
+  "project": "SVGDrawer",
+  "version": "3.0.0",
+  "verified_at": "2026-09-19T11:05:19.834687+00:00",
+  "environment": {
+    "python": "3.13.5",
+    "platform": "Linux",
+    "cairosvg": "2.8.2",
+    "playwright": "1.57.0",
+    "pillow": "12.3.0"
+  },
+  "tests": {
+    "unittest": {
+      "passed": 60,
+      "failed": 0,
+      "includes": [
+        "engine",
+        "CLI",
+        "source maintenance",
+        "HTTP",
+        "PNG",
+        "legacy recipe compatibility"
+      ]
+    },
+    "geometry": {
+      "elements": [
+        {
+          "id": "arrow",
+          "cases": 11,
+          "parts": 1
+        },
+        {
+          "id": "chip",
+          "cases": 15,
+          "parts": 28
+        },
+        {
+          "id": "circle",
+          "cases": 7,
+          "parts": 1
+        },
+        {
+          "id": "code_page",
+          "cases": 13,
+          "parts": 6
+        },
+        {
+          "id": "code_stack",
+          "cases": 11,
+          "parts": 6
+        },
+        {
+          "id": "database",
+          "cases": 13,
+          "parts": 5
+        },
+        {
+          "id": "folder",
+          "cases": 11,
+          "parts": 4
+        },
+        {
+          "id": "gear",
+          "cases": 11,
+          "parts": 1
+        },
+        {
+          "id": "hierarchy",
+          "cases": 15,
+          "parts": 10
+        },
+        {
+          "id": "laptop",
+          "cases": 13,
+          "parts": 7
+        },
+        {
+          "id": "line",
+          "cases": 10,
+          "parts": 1
+        },
+        {
+          "id": "pages",
+          "cases": 15,
+          "parts": 8
+        },
+        {
+          "id": "person",
+          "cases": 11,
+          "parts": 2
+        },
+        {
+          "id": "rectangle",
+          "cases": 7,
+          "parts": 1
+        },
+        {
+          "id": "report",
+          "cases": 15,
+          "parts": 9
+        },
+        {
+          "id": "servers",
+          "cases": 15,
+          "parts": 121
+        },
+        {
+          "id": "sync",
+          "cases": 15,
+          "parts": 4
+        },
+        {
+          "id": "text",
+          "cases": 11,
+          "parts": 1
+        },
+        {
+          "id": "waveform",
+          "cases": 23,
+          "parts": 19
+        }
+      ],
+      "element_count": 19,
+      "case_count": 242
+    },
+    "browser_workflows": {
+      "status": "passed",
+      "mode": "explicit CPython bridge + simulated storage",
+      "page_errors": []
+    },
+    "storage_safety": {
+      "status": "passed",
+      "mode": "simulated localStorage",
+      "scenarios": 4
+    },
+    "worker_fallback": {
+      "status": "passed",
+      "mode": "simulated worker failures",
+      "scenarios": 2
+    }
+  },
+  "limitations": [
+    "Direct Chromium navigation to http://127.0.0.1:8767 was attempted and blocked: ERR_BLOCKED_BY_ADMINISTRATOR. Python HTTP endpoint tests passed separately.",
+    "Native browser localStorage persistence was not tested; the browser suite uses an explicit adapter.",
+    "Successful standalone Pyodide/CDN startup was not verified.",
+    "Windows/macOS native execution and all Python 3.10+ versions were not separately tested.",
+    "Renderer validation is not a security sandbox or a full visual/bounds proof."
+  ]
+}

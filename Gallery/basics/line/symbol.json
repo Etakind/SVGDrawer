@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "version": 1,
+  "description": "A simple line to connect or separate elements.",
+  "tags": [
+    "connector",
+    "divider"
+  ],
+  "order": 170,
+  "defaults": {
+    "fill": "#DCEBFF",
+    "accent": "#2878D4",
+    "stroke": "#193E5B",
+    "highlight": "#FFFFFF",
+    "stroke_width": 5,
+    "radius": 7,
+    "length": 206,
+    "line_width": 6,
+    "dash": "solid"
+  },
+  "controls": [
+    {
+      "key": "length",
+      "label": "Line length",
+      "type": "number",
+      "default": 206,
+      "min": 10,
+      "max": 230,
+      "step": 1,
+      "unit": "u"
+    },
+    {
+      "key": "line_width",
+      "label": "Line thickness",
+      "type": "number",
+      "default": 6,
+      "min": 1,
+      "max": 28,
+      "step": 1,
+      "unit": "u"
+    },
+    {
+      "key": "dash",
+      "label": "Line style",
+      "type": "select",
+      "default": "solid",
+      "options": [
+        "solid",
+        "dashed",
+        "dotted"
+      ]
+    }
+  ]
+}

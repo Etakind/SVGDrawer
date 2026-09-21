@@ -1,0 +1,16 @@
+"""Example new renderer. Register with --add-symbol signal_probe --script this-file.py --spec signal_probe.json."""
+
+def render(d, p):
+    # Part IDs remain stable when labels or defaults change.
+    count = int(p['ports'])
+    for i in range(count):
+        x = 62 + i * 132 / max(1, count - 1) if count > 1 else 128
+        d.line(f'port-{i+1}', x, 207, x, 207 + p['port_length'], p['stroke'], 6)
+    d.rect('probe-body', 40, 34, 176, 179, p['fill'], p['stroke'], p['stroke_width'], 12)
+    width = p['display_width']
+    x = 128 - width / 2
+    d.rect('display', x, 59, width, 85, p['highlight'], p['stroke'], 3, 4)
+    inner = width - 24
+    d.path('signal', f'M {x+12} 115 H {x+12+inner*.25} V 83 H {x+12+inner*.60} V 115 H {x+width-12}',
+           'none', p['accent'], 5)
+    d.label('label', 128, 185, p['label'], 22, p['stroke'])

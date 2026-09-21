@@ -1,0 +1,116 @@
+{
+  "schema_version": 1,
+  "version": 1,
+  "description": "A digital, sine, triangle or sawtooth waveform on a gridded display.",
+  "tags": [
+    "signal",
+    "digital",
+    "sine",
+    "oscilloscope",
+    "pulse"
+  ],
+  "order": 130,
+  "defaults": {
+    "fill": "#142D35",
+    "accent": "#40DABB",
+    "stroke": "#193E5B",
+    "highlight": "#85AEB2",
+    "stroke_width": 5,
+    "radius": 7,
+    "wave_type": "digital",
+    "cycles": 4,
+    "amplitude": 75,
+    "duty": 50,
+    "trace_width": 4,
+    "screen_width": 231,
+    "screen_height": 139,
+    "grid": true,
+    "frame": true
+  },
+  "controls": [
+    {
+      "key": "wave_type",
+      "label": "Signal shape",
+      "type": "select",
+      "default": "digital",
+      "options": [
+        "digital",
+        "sine",
+        "triangle",
+        "sawtooth"
+      ]
+    },
+    {
+      "key": "cycles",
+      "label": "Cycles",
+      "type": "number",
+      "default": 4,
+      "min": 1,
+      "max": 12,
+      "step": 1,
+      "unit": ""
+    },
+    {
+      "key": "amplitude",
+      "label": "Peak-to-peak amplitude",
+      "type": "number",
+      "default": 75,
+      "min": 14,
+      "max": 125,
+      "step": 1,
+      "unit": "u"
+    },
+    {
+      "key": "duty",
+      "label": "Duty cycle (digital)",
+      "type": "number",
+      "default": 50,
+      "min": 10,
+      "max": 90,
+      "step": 1,
+      "unit": "%"
+    },
+    {
+      "key": "trace_width",
+      "label": "Trace thickness",
+      "type": "number",
+      "default": 4,
+      "min": 1,
+      "max": 10,
+      "step": 0.5,
+      "unit": "u"
+    },
+    {
+      "key": "screen_width",
+      "label": "Screen width",
+      "type": "number",
+      "default": 231,
+      "min": 166,
+      "max": 237,
+      "step": 1,
+      "unit": "u"
+    },
+    {
+      "key": "screen_height",
+      "label": "Screen height",
+      "type": "number",
+      "default": 139,
+      "min": 85,
+      "max": 180,
+      "step": 1,
+      "unit": "u"
+    },
+    {
+      "key": "grid",
+      "label": "Show grid",
+      "type": "boolean",
+      "default": true
+    },
+    {
+      "key": "frame",
+      "label": "Show frame",
+      "type": "boolean",
+      "default": true
+    }
+  ]
+}

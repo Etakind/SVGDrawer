@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "version": 1,
+  "description": "Layered sheets with a folded corner and adjustable text lines.",
+  "tags": [
+    "paper",
+    "document",
+    "sheets",
+    "stack"
+  ],
+  "order": 10,
+  "defaults": {
+    "fill": "#B7B6F1",
+    "accent": "#9394E5",
+    "stroke": "#25222B",
+    "highlight": "#FFFFFF",
+    "stroke_width": 5,
+    "radius": 7,
+    "pages": 2,
+    "lines": 5,
+    "line_length": 122,
+    "line_width": 7,
+    "line_gap": 34,
+    "fold": 43
+  },
+  "controls": [
+    {
+      "key": "pages",
+      "label": "Number of sheets",
+      "type": "number",
+      "default": 2,
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "unit": ""
+    },
+    {
+      "key": "lines",
+      "label": "Text lines",
+      "type": "number",
+      "default": 5,
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "unit": ""
+    },
+    {
+      "key": "line_length",
+      "label": "Line length",
+      "type": "number",
+      "default": 122,
+      "min": 30,
+      "max": 138,
+      "step": 1,
+      "unit": "u"
+    },
+    {
+      "key": "line_width",
+      "label": "Line thickness",
+      "type": "number",
+      "default": 7,
+      "min": 1,
+      "max": 14,
+      "step": 1,
+      "unit": "u"
+    },
+    {
+      "key": "line_gap",
+      "label": "Line spacing",
+      "type": "number",
+      "default": 34,
+      "min": 8,
+      "max": 44,
+      "step": 1,
+      "unit": "u"
+    },
+    {
+      "key": "fold",
+      "label": "Corner fold",
+      "type": "number",
+      "default": 43,
+      "min": 15,
+      "max": 52,
+      "step": 1,
+      "unit": "u"
+    }
+  ]
+}

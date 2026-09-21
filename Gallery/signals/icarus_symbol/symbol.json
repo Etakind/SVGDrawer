@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "version": 1,
+  "description": "A navy tile containing a light engineering waveform.",
+  "tags": [
+    "eda",
+    "verilog",
+    "simulation"
+  ],
+  "defaults": {
+    "fill": "#183B70",
+    "accent": "#2878D4",
+    "stroke": "none",
+    "highlight": "#E6F4FF",
+    "stroke_width": 5,
+    "radius": 7
+  },
+  "controls": [],
+  "order": 100
+}

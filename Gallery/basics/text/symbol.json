@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "version": 1,
+  "description": "A text label for annotations. Text remains editable SVG text.",
+  "tags": [
+    "label",
+    "annotation",
+    "typography"
+  ],
+  "order": 180,
+  "defaults": {
+    "fill": "#193E5B",
+    "accent": "#193E5B",
+    "stroke": "#193E5B",
+    "highlight": "#FFFFFF",
+    "stroke_width": 5,
+    "radius": 7,
+    "label": "Label",
+    "font_size": 44,
+    "font_weight": "600"
+  },
+  "controls": [
+    {
+      "key": "label",
+      "label": "Text",
+      "type": "text",
+      "default": "Label",
+      "max_length": 80
+    },
+    {
+      "key": "font_size",
+      "label": "Font size",
+      "type": "number",
+      "default": 44,
+      "min": 8,
+      "max": 112,
+      "step": 1,
+      "unit": "u"
+    },
+    {
+      "key": "font_weight",
+      "label": "Font weight",
+      "type": "select",
+      "default": "600",
+      "options": [
+        "400",
+        "500",
+        "600",
+        "700"
+      ]
+    }
+  ]
+}

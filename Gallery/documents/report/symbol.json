@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "version": 1,
+  "description": "Adjustable text rows and a small ascending bar chart.",
+  "tags": [
+    "analytics",
+    "chart",
+    "bars",
+    "document"
+  ],
+  "order": 40,
+  "defaults": {
+    "fill": "#FFFFFF",
+    "accent": "#2878D4",
+    "stroke": "#193E5B",
+    "highlight": "#FFFFFF",
+    "stroke_width": 5,
+    "radius": 7,
+    "lines": 4,
+    "line_length": 124,
+    "line_width": 7,
+    "bars": 4,
+    "bar_width": 21,
+    "bar_height": 81
+  },
+  "controls": [
+    {
+      "key": "lines",
+      "label": "Text lines",
+      "type": "number",
+      "default": 4,
+      "min": 0,
+      "max": 6,
+      "step": 1,
+      "unit": ""
+    },
+    {
+      "key": "line_length",
+      "label": "Text length",
+      "type": "number",
+      "default": 124,
+      "min": 48,
+      "max": 142,
+      "step": 1,
+      "unit": "u"
+    },
+    {
+      "key": "line_width",
+      "label": "Text thickness",
+      "type": "number",
+      "default": 7,
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "unit": "u"
+    },
+    {
+      "key": "bars",
+      "label": "Chart bars",
+      "type": "number",
+      "default": 4,
+      "min": 1,
+      "max": 9,
+      "step": 1,
+      "unit": ""
+    },
+    {
+      "key": "bar_width",
+      "label": "Bar width",
+      "type": "number",
+      "default": 21,
+      "min": 5,
+      "max": 30,
+      "step": 1,
+      "unit": "u"
+    },
+    {
+      "key": "bar_height",
+      "label": "Maximum bar height",
+      "type": "number",
+      "default": 81,
+      "min": 22,
+      "max": 97,
+      "step": 1,
+      "unit": "u"
+    }
+  ]
+}

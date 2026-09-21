@@ -1,0 +1,115 @@
+usage: svgdrawer [-h] [--list | --list-all-flat | --list-category [CATEGORY] |
+                 --list-color-sets | --describe ID | --list-parts ID |
+                 --create ID | --recipe FILE | --add-category ID |
+                 --add-symbol ID | --init-symbol ID | --validate [ID] |
+                 --build | --serve | --version] [--search SEARCH]
+                 [--color-sets NAME_OR_JSON] [--params JSON_OR_@FILE]
+                 [--set KEY=VALUE] [--parts JSON_OR_@FILE] [--output OUTPUT]
+                 [--format {svg,png,both}] [--width WIDTH] [--height HEIGHT]
+                 [--size SIZE] [--padding PADDING] [--scale {1,2,4}]
+                 [--background HEX | --transparent] [--stretch]
+                 [--save-recipe FILE] [--script FILE.py] [--spec FILE.json]
+                 [--category ID] [--name NAME] [--description DESCRIPTION]
+                 [--tags TAGS] [--order ORDER] [--icon ICON]
+                 [--output-dir OUTPUT_DIR] [--json] [--dry-run] [--force]
+                 [--timeout TIMEOUT] [--debug] [--port PORT] [--no-browser]
+
+SVGDrawer: browse a Gallery, customize one SVG, or register trusted Python geometry.
+
+options:
+  -h, --help            show this help message and exit
+  --list                List the Gallery grouped by category.
+  --list-all-flat       List all symbols in one flat table or JSON array
+                        field.
+  --list-category [CATEGORY]
+                        No ID: list categories. With an ID: list that
+                        category’s symbols.
+  --list-color-sets     List default and named color sets.
+  --describe ID         Read defaults and control schema without executing
+                        renderers.
+  --list-parts ID       Render and list stable inner-part IDs; accepts
+                        --set/--params.
+  --create ID           Customize and export a registered Gallery symbol.
+  --recipe FILE         Export from a saved .asset.json recipe.
+  --add-category ID     Add a persistent source category to
+                        Gallery/catalog.json.
+  --add-symbol ID       Validate and register a Python script/specification in
+                        Gallery/.
+  --init-symbol ID      Generate editable Python + JSON templates under
+                        drafts/.
+  --validate [ID]       Validate all symbols, or one ID; no persistent source
+                        changes.
+  --build               Regenerate the single HTML from Gallery/ and app/.
+  --serve               Build and open the local Gallery server.
+  --version             Print SVGDrawer version.
+
+Discovery:
+  --search SEARCH       Filter list results by ID, name, style, description or
+                        tags.
+
+Customization and export:
+  --color-sets NAME_OR_JSON
+                        default, a named set, or 1–4 hex colors in
+                        fill/accent/stroke/highlight order.
+  --params JSON_OR_@FILE
+                        JSON parameter overrides, inline or @filename.
+  --set KEY=VALUE       Repeatable parameter override; takes precedence over
+                        --params.
+  --parts JSON_OR_@FILE
+                        Replace part overrides with a JSON object keyed by
+                        part ID.
+  --output, -o OUTPUT   Output path. Default: exports/ID.svg. Use - for SVG on
+                        stdout.
+  --format {svg,png,both}
+                        Infer from suffix by default. PNG always saves an SVG
+                        sidecar first.
+  --width WIDTH         SVG width in pixels, 16–4096 (default 512).
+  --height HEIGHT       SVG height in pixels, 16–4096 (default 512).
+  --size SIZE           Set both width and height; --width/--height take
+                        precedence.
+  --padding PADDING     Padding around the 256-unit design, 0–96 (default 8).
+  --scale {1,2,4}       PNG pixel scale only (default 1).
+  --background HEX      Opaque export background; hex with or without #.
+  --transparent         Export without background (default for --create).
+  --stretch             Stretch SVG to a non-square size; otherwise preserve
+                        aspect ratio.
+  --save-recipe FILE    Save the resolved, repeatable .asset.json
+                        customization.
+
+Gallery source management:
+  --script FILE.py      Trusted Python file defining render(drawing, params).
+  --spec FILE.json      Symbol definition with defaults and UI controls.
+  --category ID         Category ID for an symbol/template.
+  --name NAME           Human-readable symbol/category name; IDs remain
+                        stable.
+  --description DESCRIPTION
+                        Symbol/category description.
+  --tags TAGS           Comma-separated symbol search tags.
+  --order ORDER         Display order in the Gallery.
+  --icon ICON           Category icon key (folder, chip, file, network, wave,
+                        shapes).
+  --output-dir OUTPUT_DIR
+                        Folder for --init-symbol templates (default drafts).
+
+Automation and safety:
+  --json                One versioned JSON success on stdout; errors on
+                        stderr; no prompts.
+  --dry-run             Validate and report a create/add/template/build
+                        without publishing files.
+  --force               Explicitly allow replacement. Source updates retain
+                        history backups.
+  --timeout TIMEOUT     Validation subprocess timeout, 1–300 seconds (default
+                        30).
+  --debug               Include diagnostic traceback on stderr for unexpected
+                        failures.
+  --port PORT           Local --serve port (default 8765).
+  --no-browser          Do not launch a browser with --serve.
+
+Examples:
+  python svgdrawer.py --list-all-flat --json
+  python svgdrawer.py --create chip --color-sets default --set pins=10
+  python svgdrawer.py --create chip --color-sets '["012345","427abc"]'
+  python svgdrawer.py --add-symbol sensor --script drafts/sensor.py --spec drafts/sensor.json
+Guide: docs/AGENT_GUIDE.md. Project instructions for agents: AGENTS.md.
+SVG needs only Python 3.10+. Terminal PNG additionally needs CairoSVG + Cairo.
+Python scripts are trusted code; registration and rendering are not sandboxed.

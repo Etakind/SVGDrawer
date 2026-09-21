@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "version": 1,
+  "description": "A connector with configurable shaft and arrowhead.",
+  "tags": [
+    "direction",
+    "connector"
+  ],
+  "order": 160,
+  "defaults": {
+    "fill": "#DCEBFF",
+    "accent": "#2878D4",
+    "stroke": "#193E5B",
+    "highlight": "#FFFFFF",
+    "stroke_width": 5,
+    "radius": 7,
+    "length": 194,
+    "shaft_width": 18,
+    "head_length": 51,
+    "head_width": 86
+  },
+  "controls": [
+    {
+      "key": "length",
+      "label": "Arrow length",
+      "type": "number",
+      "default": 194,
+      "min": 40,
+      "max": 224,
+      "step": 1,
+      "unit": "u"
+    },
+    {
+      "key": "shaft_width",
+      "label": "Shaft width",
+      "type": "number",
+      "default": 18,
+      "min": 2,
+      "max": 46,
+      "step": 1,
+      "unit": "u"
+    },
+    {
+      "key": "head_length",
+      "label": "Arrowhead length",
+      "type": "number",
+      "default": 51,
+      "min": 16,
+      "max": 78,
+      "step": 1,
+      "unit": "u"
+    },
+    {
+      "key": "head_width",
+      "label": "Arrowhead width",
+      "type": "number",
+      "default": 86,
+      "min": 22,
+      "max": 140,
+      "step": 1,
+      "unit": "u"
+    }
+  ]
+}

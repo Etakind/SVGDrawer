@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "version": 1,
+  "description": "Single curved arrow with adjustable length, bend, width, head and angle.",
+  "tags": [
+    "arrow",
+    "curve",
+    "connector",
+    "cycle"
+  ],
+  "defaults": {
+    "fill": "#DCEBFF",
+    "accent": "#2676B9",
+    "stroke": "#193E5B",
+    "highlight": "#FFFFFF",
+    "stroke_width": 8,
+    "radius": 7,
+    "length": 160,
+    "bend": 45,
+    "head_length": 23,
+    "head_width": 25,
+    "angle": 0
+  },
+  "controls": [
+    {
+      "key": "length",
+      "label": "Arrow length",
+      "type": "number",
+      "default": 160,
+      "min": 60,
+      "max": 180,
+      "step": 1
+    },
+    {
+      "key": "bend",
+      "label": "Curve bend",
+      "type": "number",
+      "default": 45,
+      "min": -65,
+      "max": 65,
+      "step": 1
+    },
+    {
+      "key": "head_length",
+      "label": "Head length",
+      "type": "number",
+      "default": 23,
+      "min": 10,
+      "max": 32,
+      "step": 1
+    },
+    {
+      "key": "head_width",
+      "label": "Head width",
+      "type": "number",
+      "default": 25,
+      "min": 10,
+      "max": 34,
+      "step": 1
+    },
+    {
+      "key": "angle",
+      "label": "Rotation angle",
+      "type": "number",
+      "default": 0,
+      "min": -180,
+      "max": 180,
+      "step": 1
+    }
+  ],
+  "order": 100
+}

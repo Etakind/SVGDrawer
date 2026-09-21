@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "version": 1,
+  "description": "A tabbed folder with an angled front and optional inserts.",
+  "tags": [
+    "directory",
+    "files",
+    "organize"
+  ],
+  "order": 20,
+  "defaults": {
+    "fill": "#DCEBFF",
+    "accent": "#2878D4",
+    "stroke": "#193E5B",
+    "highlight": "#FFFFFF",
+    "stroke_width": 5,
+    "radius": 7,
+    "papers": 1,
+    "tab_width": 67,
+    "opening": 27,
+    "flap_height": 121
+  },
+  "controls": [
+    {
+      "key": "papers",
+      "label": "Paper inserts",
+      "type": "number",
+      "default": 1,
+      "min": 0,
+      "max": 5,
+      "step": 1,
+      "unit": ""
+    },
+    {
+      "key": "tab_width",
+      "label": "Tab width",
+      "type": "number",
+      "default": 67,
+      "min": 38,
+      "max": 108,
+      "step": 1,
+      "unit": "u"
+    },
+    {
+      "key": "opening",
+      "label": "Front opening",
+      "type": "number",
+      "default": 27,
+      "min": 8,
+      "max": 42,
+      "step": 1,
+      "unit": "u"
+    },
+    {
+      "key": "flap_height",
+      "label": "Front height",
+      "type": "number",
+      "default": 121,
+      "min": 80,
+      "max": 143,
+      "step": 1,
+      "unit": "u"
+    }
+  ]
+}

@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "version": 1,
+  "description": "A cylindrical data store with independently editable layers.",
+  "tags": [
+    "storage",
+    "data",
+    "sql",
+    "cylinder"
+  ],
+  "order": 70,
+  "defaults": {
+    "fill": "#2878BD",
+    "accent": "#62ACE1",
+    "stroke": "#FFFFFF",
+    "highlight": "#FFFFFF",
+    "stroke_width": 5,
+    "radius": 7,
+    "tiers": 3,
+    "diameter": 174,
+    "stack_height": 158,
+    "ellipse_depth": 29,
+    "divider_width": 4
+  },
+  "controls": [
+    {
+      "key": "tiers",
+      "label": "Storage layers",
+      "type": "number",
+      "default": 3,
+      "min": 1,
+      "max": 7,
+      "step": 1,
+      "unit": ""
+    },
+    {
+      "key": "diameter",
+      "label": "Cylinder width",
+      "type": "number",
+      "default": 174,
+      "min": 100,
+      "max": 205,
+      "step": 1,
+      "unit": "u"
+    },
+    {
+      "key": "stack_height",
+      "label": "Stack height",
+      "type": "number",
+      "default": 158,
+      "min": 80,
+      "max": 190,
+      "step": 1,
+      "unit": "u"
+    },
+    {
+      "key": "ellipse_depth",
+      "label": "Ellipse depth",
+      "type": "number",
+      "default": 29,
+      "min": 12,
+      "max": 42,
+      "step": 1,
+      "unit": "u"
+    },
+    {
+      "key": "divider_width",
+      "label": "Divider thickness",
+      "type": "number",
+      "default": 4,
+      "min": 1,
+      "max": 9,
+      "step": 1,
+      "unit": "u"
+    }
+  ]
+}

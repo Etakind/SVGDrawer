@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "version": 1,
+  "description": "A person behind a laptop; fill changes only the person color.",
+  "tags": [
+    "person",
+    "user",
+    "computer",
+    "terminal"
+  ],
+  "defaults": {
+    "fill": "#2878B5",
+    "accent": "#A8DDF6",
+    "stroke": "#213644",
+    "highlight": "#DEE9ED",
+    "stroke_width": 4,
+    "radius": 7
+  },
+  "controls": [],
+  "order": 100
+}

@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "version": 1,
+  "description": "A scalable ellipse, circle or ring.",
+  "tags": [
+    "ellipse",
+    "shape",
+    "ring"
+  ],
+  "order": 150,
+  "defaults": {
+    "fill": "#DCEBFF",
+    "accent": "#2878D4",
+    "stroke": "#193E5B",
+    "highlight": "#FFFFFF",
+    "stroke_width": 5,
+    "radius": 7,
+    "radius_x": 89,
+    "radius_y": 89
+  },
+  "controls": [
+    {
+      "key": "radius_x",
+      "label": "Horizontal radius",
+      "type": "number",
+      "default": 89,
+      "min": 10,
+      "max": 113,
+      "step": 1,
+      "unit": "u"
+    },
+    {
+      "key": "radius_y",
+      "label": "Vertical radius",
+      "type": "number",
+      "default": 89,
+      "min": 10,
+      "max": 113,
+      "step": 1,
+      "unit": "u"
+    }
+  ]
+}

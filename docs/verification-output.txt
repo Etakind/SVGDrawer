@@ -1,0 +1,85 @@
+SVGDrawer v3 verification
+
+test_addition_timeout_releases_writer_lock (test_cli.CLITests.test_addition_timeout_releases_writer_lock) ... ok
+test_bad_recipe_types_have_invalid_input_errors (test_cli.CLITests.test_bad_recipe_types_have_invalid_input_errors) ... ok
+test_category_add_force_and_history (test_cli.CLITests.test_category_add_force_and_history) ... ok
+test_colors_default_named_and_arrays (test_cli.CLITests.test_colors_default_named_and_arrays) ... ok
+test_describe_machine_schema (test_cli.CLITests.test_describe_machine_schema) ... ok
+test_dry_runs_do_not_publish_files (test_cli.CLITests.test_dry_runs_do_not_publish_files) ... ok
+test_duplicate_parts_are_rejected_on_registration (test_cli.CLITests.test_duplicate_parts_are_rejected_on_registration) ... ok
+test_embedded_spec_and_minimal_script_registration (test_cli.CLITests.test_embedded_spec_and_minimal_script_registration) ... ok
+test_export_options_and_dimension_rejection (test_cli.CLITests.test_export_options_and_dimension_rejection) ... ok
+test_failed_addition_is_not_published (test_cli.CLITests.test_failed_addition_is_not_published) ... ok
+test_force_update_bumps_version_and_retains_old_code (test_cli.CLITests.test_force_update_bumps_version_and_retains_old_code) ... ok
+test_full_scaffold_register_customize_build_workflow (test_cli.CLITests.test_full_scaffold_register_customize_build_workflow) ... ok
+test_invalid_geometry_fails_without_writes (test_cli.CLITests.test_invalid_geometry_fails_without_writes) ... ok
+test_lists_and_category_filters (test_cli.CLITests.test_lists_and_category_filters) ... ok
+test_lock_protects_readers_and_writers (test_cli.CLITests.test_lock_protects_readers_and_writers) ... ok
+test_metadata_does_not_execute_renderers (test_cli.CLITests.test_metadata_does_not_execute_renderers) ... ok
+test_missing_or_irrelevant_options_are_errors (test_cli.CLITests.test_missing_or_irrelevant_options_are_errors) ... ok
+test_new_element_dry_run_keeps_gallery_unchanged (test_cli.CLITests.test_new_element_dry_run_keeps_gallery_unchanged) ... ok
+test_no_canvas_and_renamed_source_layout (test_cli.CLITests.test_no_canvas_and_renamed_source_layout) ... ok
+test_no_clobber_then_explicit_force (test_cli.CLITests.test_no_clobber_then_explicit_force) ... ok
+test_params_precedence_and_files (test_cli.CLITests.test_params_precedence_and_files) ... ok
+test_parts_discovery_and_edits (test_cli.CLITests.test_parts_discovery_and_edits) ... ok
+test_png_is_generated_from_svg_with_correct_dimensions (test_cli.CLITests.test_png_is_generated_from_svg_with_correct_dimensions) ... ok
+test_png_missing_dependency_keeps_svg (test_cli.CLITests.test_png_missing_dependency_keeps_svg) ... ok
+test_raw_svg_stdout_and_defaults_directory (test_cli.CLITests.test_raw_svg_stdout_and_defaults_directory) ... ok
+test_recipe_roundtrip_and_customization (test_cli.CLITests.test_recipe_roundtrip_and_customization) ... ok
+test_shipped_single_script_example (test_cli.CLITests.test_shipped_single_script_example) ... ok
+test_spec_only_variant_reuses_renderer_without_ui_changes (test_cli.CLITests.test_spec_only_variant_reuses_renderer_without_ui_changes) ... ok
+test_strict_color_and_empty_category_inputs (test_cli.CLITests.test_strict_color_and_empty_category_inputs) ... ok
+test_validate_all (test_cli.CLITests.test_validate_all) ... ok
+test_all_numeric_controls_at_extremes (test_engine.GalleryTests.test_all_numeric_controls_at_extremes) ... ok
+test_every_default_is_valid_svg (test_engine.GalleryTests.test_every_default_is_valid_svg) ... ok
+test_individual_control_extremes (test_engine.GalleryTests.test_individual_control_extremes) ... ok
+test_metadata_returns_an_independent_copy (test_engine.GalleryTests.test_metadata_returns_an_independent_copy) ... ok
+test_reference_collection_is_preserved (test_engine.GalleryTests.test_reference_collection_is_preserved) ... ok
+test_registry_errors_are_actionable (test_engine.GalleryTests.test_registry_errors_are_actionable) ... ok
+test_entities_and_bad_viewboxes_rejected (test_engine.ImportTests.test_entities_and_bad_viewboxes_rejected) ... ok
+test_external_resources_and_scripts_are_removed (test_engine.ImportTests.test_external_resources_and_scripts_are_removed) ... ok
+test_import_is_canonical_and_repeatable (test_engine.ImportTests.test_import_is_canonical_and_repeatable) ... ok
+test_import_limits (test_engine.ImportTests.test_import_limits) ... ok
+test_use_cycles_and_expansion_rejected (test_engine.ImportTests.test_use_cycles_and_expansion_rejected) ... ok
+test_bad_references_and_versions_rejected (test_engine.LibraryTests.test_bad_references_and_versions_rejected) ... ok
+test_imported_backup_is_idempotent (test_engine.LibraryTests.test_imported_backup_is_idempotent) ... ok
+test_recipe_round_trip (test_engine.LibraryTests.test_recipe_round_trip) ... ok
+test_versioned_backup_round_trip (test_engine.LibraryTests.test_versioned_backup_round_trip) ... ok
+test_bounds_numbers_and_unknown_ids (test_engine.RenderTests.test_bounds_numbers_and_unknown_ids) ... ok
+test_escaping_labels (test_engine.RenderTests.test_escaping_labels) ... ok
+test_export_is_clean_and_single_asset (test_engine.RenderTests.test_export_is_clean_and_single_asset) ... ok
+test_individual_part_overrides (test_engine.RenderTests.test_individual_part_overrides) ... ok
+test_non_square_output_and_background (test_engine.RenderTests.test_non_square_output_and_background) ... ok
+test_pin_count_and_dimensions (test_engine.RenderTests.test_pin_count_and_dimensions) ... ok
+test_error_responses (test_http.HTTPTests.test_error_responses) ... 127.0.0.1 - - [19/Sep/2026 11:04:09] "GET /missing HTTP/1.1" 404 -
+127.0.0.1 - - [19/Sep/2026 11:04:09] "POST /api/render HTTP/1.1" 400 -
+127.0.0.1 - - [19/Sep/2026 11:04:09] "POST /api/render HTTP/1.1" 400 -
+127.0.0.1 - - [19/Sep/2026 11:04:09] "POST /api/render HTTP/1.1" 415 -
+ok
+test_health_and_html (test_http.HTTPTests.test_health_and_html) ... ok
+test_python_png (test_http.HTTPTests.test_python_png) ... 127.0.0.1 - - [19/Sep/2026 11:04:09] "POST /api/png HTTP/1.1" 400 -
+ok
+test_remote_origins_and_hosts_rejected (test_http.HTTPTests.test_remote_origins_and_hosts_rejected) ... 127.0.0.1 - - [19/Sep/2026 11:04:09] "GET /api/health HTTP/1.1" 403 -
+127.0.0.1 - - [19/Sep/2026 11:04:09] "POST /api/render HTTP/1.1" 403 -
+ok
+test_svg (test_http.HTTPTests.test_svg) ... ok
+test_add_renderer_and_definition_without_ui_changes (test_maintenance.MaintenanceTests.test_add_renderer_and_definition_without_ui_changes) ... ok
+test_v1_imported_svg_is_sanitized (test_maintenance.MaintenanceTests.test_v1_imported_svg_is_sanitized) ... ok
+test_v1_presets_migrate_without_canvas_positions (test_maintenance.MaintenanceTests.test_v1_presets_migrate_without_canvas_positions) ... ok
+test_v1_unknown_types_fail_without_silent_drops (test_maintenance.MaintenanceTests.test_v1_unknown_types_fail_without_silent_drops) ... ok
+
+----------------------------------------------------------------------
+Ran 60 tests in 84.645s
+
+OK
+
+BROWSER (bridge)
+PASS: gallery search / category filters / favorites / sorting; Python geometry and colors; part overrides; undo/redo; draft retention; save variants; SVG and browser PNG; opaque non-square PNG; recipes and self-contained Python script; category renaming; SVG sanitization; non-destructive merge and repeat deduplication; mobile layouts; storage reload adapter.
+Browser errors: []
+
+STORAGE (adapter)
+PASS: startup write protection; unreadable-data preservation and exact recovery; quota warning and in-memory backup; overlapping update guards.
+Storage was simulated; native persistence was not tested. Browser errors: []
+
+RUNTIME FALLBACK (simulation)
+PASS: synchronous and asynchronous module-worker failures use the same-Python compatibility path.

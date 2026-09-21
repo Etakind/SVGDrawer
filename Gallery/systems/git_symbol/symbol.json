@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "version": 1,
+  "description": "An orange diamond with a white branching version-control graph.",
+  "tags": [
+    "eda",
+    "git",
+    "version-control"
+  ],
+  "defaults": {
+    "fill": "#F34F29",
+    "accent": "#2878D4",
+    "stroke": "none",
+    "highlight": "#FFFFFF",
+    "stroke_width": 5,
+    "radius": 7
+  },
+  "controls": [],
+  "order": 100
+}

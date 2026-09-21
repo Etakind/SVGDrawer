@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "version": 1,
+  "description": "A simple profile silhouette with adjustable proportions.",
+  "tags": [
+    "user",
+    "profile",
+    "account",
+    "people"
+  ],
+  "order": 90,
+  "defaults": {
+    "fill": "#287ABC",
+    "accent": "#5EA8DF",
+    "stroke": "#287ABC",
+    "highlight": "#FFFFFF",
+    "stroke_width": 5,
+    "radius": 7,
+    "head_radius": 39,
+    "shoulder_width": 159,
+    "body_height": 85,
+    "head_gap": 11
+  },
+  "controls": [
+    {
+      "key": "head_radius",
+      "label": "Head radius",
+      "type": "number",
+      "default": 39,
+      "min": 22,
+      "max": 48,
+      "step": 1,
+      "unit": "u"
+    },
+    {
+      "key": "shoulder_width",
+      "label": "Shoulder width",
+      "type": "number",
+      "default": 159,
+      "min": 90,
+      "max": 193,
+      "step": 1,
+      "unit": "u"
+    },
+    {
+      "key": "body_height",
+      "label": "Body height",
+      "type": "number",
+      "default": 85,
+      "min": 55,
+      "max": 110,
+      "step": 1,
+      "unit": "u"
+    },
+    {
+      "key": "head_gap",
+      "label": "Head-to-body gap",
+      "type": "number",
+      "default": 11,
+      "min": 3,
+      "max": 24,
+      "step": 1,
+      "unit": "u"
+    }
+  ]
+}

@@ -1,0 +1,3 @@
+# Optional for terminal and Python-side PNG export. SVG needs no packages.
+# Tested with CairoSVG 2.8.2. Its Cairo system runtime must also be available.
+CairoSVG==2.8.2

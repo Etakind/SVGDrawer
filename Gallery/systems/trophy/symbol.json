@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "version": 1,
+  "description": "A gold cup award.",
+  "tags": [
+    "competition",
+    "award"
+  ],
+  "defaults": {
+    "fill": "#DCEBFF",
+    "accent": "#C26B08",
+    "stroke": "#9C4D00",
+    "highlight": "#FFFFFF",
+    "stroke_width": 5,
+    "radius": 7
+  },
+  "controls": [],
+  "order": 100
+}

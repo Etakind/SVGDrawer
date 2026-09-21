@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "id": "signal_probe",
+  "version": 1,
+  "name": "Signal probe",
+  "category": "signals",
+  "renderer": "signal_probe",
+  "description": "A compact probe with an adjustable display and output ports.",
+  "tags": ["sensor", "probe", "measurement", "instrument"],
+  "order": 145,
+  "defaults": {
+    "fill": "#DBEFE8",
+    "accent": "#258C78",
+    "stroke": "#294F49",
+    "highlight": "#FFFFFF"
+  },
+  "controls": [
+    {"key": "ports", "label": "Output ports", "type": "number", "default": 4, "min": 1, "max": 8, "step": 1},
+    {"key": "port_length", "label": "Port length", "type": "number", "default": 22, "min": 8, "max": 34, "step": 1, "unit": "u"},
+    {"key": "display_width", "label": "Display width", "type": "number", "default": 136, "min": 96, "max": 151, "step": 1, "unit": "u"},
+    {"key": "label", "label": "Probe label", "type": "text", "default": "PROBE", "max_length": 10}
+  ]
+}

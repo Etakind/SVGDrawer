@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "version": 1,
+  "description": "Academic mortarboard and tassel.",
+  "tags": [
+    "academic",
+    "university"
+  ],
+  "defaults": {
+    "fill": "#DCEBFF",
+    "accent": "#304D70",
+    "stroke": "#193E5B",
+    "highlight": "#FFFFFF",
+    "stroke_width": 5,
+    "radius": 7
+  },
+  "controls": [],
+  "order": 100
+}

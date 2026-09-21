@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "version": 1,
+  "description": "A geometric building block for backgrounds and diagrams.",
+  "tags": [
+    "box",
+    "shape",
+    "square"
+  ],
+  "order": 140,
+  "defaults": {
+    "fill": "#DCEBFF",
+    "accent": "#2878D4",
+    "stroke": "#193E5B",
+    "highlight": "#FFFFFF",
+    "stroke_width": 5,
+    "radius": 7,
+    "shape_width": 190,
+    "shape_height": 142
+  },
+  "controls": [
+    {
+      "key": "shape_width",
+      "label": "Shape width",
+      "type": "number",
+      "default": 190,
+      "min": 20,
+      "max": 232,
+      "step": 1,
+      "unit": "u"
+    },
+    {
+      "key": "shape_height",
+      "label": "Shape height",
+      "type": "number",
+      "default": 142,
+      "min": 20,
+      "max": 232,
+      "step": 1,
+      "unit": "u"
+    }
+  ]
+}

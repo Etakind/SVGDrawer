@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "version": 1,
+  "description": "A clean source-code file with a folded corner.",
+  "tags": [
+    "source",
+    "programming",
+    "html",
+    "file"
+  ],
+  "order": 30,
+  "defaults": {
+    "fill": "#FFFFFF",
+    "accent": "#2878D4",
+    "stroke": "#193E5B",
+    "highlight": "#FFFFFF",
+    "stroke_width": 5,
+    "radius": 7,
+    "code_size": 104,
+    "code_weight": 9,
+    "header_length": 108,
+    "header_width": 5,
+    "fold": 42
+  },
+  "controls": [
+    {
+      "key": "code_size",
+      "label": "Code symbol width",
+      "type": "number",
+      "default": 104,
+      "min": 55,
+      "max": 133,
+      "step": 1,
+      "unit": "u"
+    },
+    {
+      "key": "code_weight",
+      "label": "Code stroke",
+      "type": "number",
+      "default": 9,
+      "min": 2,
+      "max": 16,
+      "step": 1,
+      "unit": "u"
+    },
+    {
+      "key": "header_length",
+      "label": "Header length",
+      "type": "number",
+      "default": 108,
+      "min": 30,
+      "max": 130,
+      "step": 1,
+      "unit": "u"
+    },
+    {
+      "key": "header_width",
+      "label": "Header thickness",
+      "type": "number",
+      "default": 5,
+      "min": 1,
+      "max": 12,
+      "step": 1,
+      "unit": "u"
+    },
+    {
+      "key": "fold",
+      "label": "Corner fold",
+      "type": "number",
+      "default": 42,
+      "min": 18,
+      "max": 55,
+      "step": 1,
+      "unit": "u"
+    }
+  ]
+}

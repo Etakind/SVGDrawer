@@ -1,0 +1,58 @@
+[
+  {
+    "id": "ocean",
+    "name": "Ocean",
+    "fill": "#DCEBFF",
+    "accent": "#2878D4",
+    "stroke": "#193E5B",
+    "highlight": "#FFFFFF"
+  },
+  {
+    "id": "lilac",
+    "name": "Lilac",
+    "fill": "#C4BFFC",
+    "accent": "#8B7AE0",
+    "stroke": "#302A4B",
+    "highlight": "#F5F2FF"
+  },
+  {
+    "id": "mint",
+    "name": "Mint",
+    "fill": "#D4F4E7",
+    "accent": "#1B9F82",
+    "stroke": "#194D46",
+    "highlight": "#F3FFFA"
+  },
+  {
+    "id": "sunset",
+    "name": "Sunset",
+    "fill": "#FFE2C4",
+    "accent": "#EC8652",
+    "stroke": "#633D30",
+    "highlight": "#FFF9EF"
+  },
+  {
+    "id": "rose",
+    "name": "Rose",
+    "fill": "#FFE0E8",
+    "accent": "#DA6D90",
+    "stroke": "#5C3047",
+    "highlight": "#FFF8FB"
+  },
+  {
+    "id": "slate",
+    "name": "Slate",
+    "fill": "#DFE5EC",
+    "accent": "#718599",
+    "stroke": "#263648",
+    "highlight": "#FFFFFF"
+  },
+  {
+    "id": "mono",
+    "name": "Mono",
+    "fill": "#FFFFFF",
+    "accent": "#242424",
+    "stroke": "#242424",
+    "highlight": "#E9E9E9"
+  }
+]

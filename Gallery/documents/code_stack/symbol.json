@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "version": 1,
+  "description": "Multiple source files as a reusable document symbol.",
+  "tags": [
+    "source",
+    "programming",
+    "files",
+    "stack"
+  ],
+  "order": 50,
+  "defaults": {
+    "fill": "#FFFFFF",
+    "accent": "#2878D4",
+    "stroke": "#193E5B",
+    "highlight": "#FFFFFF",
+    "stroke_width": 5,
+    "radius": 7,
+    "pages": 2,
+    "code_size": 92,
+    "code_weight": 8,
+    "fold": 38
+  },
+  "controls": [
+    {
+      "key": "pages",
+      "label": "Number of sheets",
+      "type": "number",
+      "default": 2,
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "unit": ""
+    },
+    {
+      "key": "code_size",
+      "label": "Code symbol width",
+      "type": "number",
+      "default": 92,
+      "min": 48,
+      "max": 119,
+      "step": 1,
+      "unit": "u"
+    },
+    {
+      "key": "code_weight",
+      "label": "Code stroke",
+      "type": "number",
+      "default": 8,
+      "min": 2,
+      "max": 16,
+      "step": 1,
+      "unit": "u"
+    },
+    {
+      "key": "fold",
+      "label": "Corner fold",
+      "type": "number",
+      "default": 38,
+      "min": 16,
+      "max": 47,
+      "step": 1,
+      "unit": "u"
+    }
+  ]
+}

@@ -1,0 +1,246 @@
+{
+  "categories": [
+    {
+      "id": "hardware",
+      "name": "Hardware",
+      "description": "Processors, computers and infrastructure.",
+      "icon": "chip",
+      "order": 10
+    },
+    {
+      "id": "documents",
+      "name": "Documents",
+      "description": "Files, folders and reports.",
+      "icon": "file",
+      "order": 20
+    },
+    {
+      "id": "systems",
+      "name": "Systems",
+      "description": "People, data and connected systems.",
+      "icon": "network",
+      "order": 30
+    },
+    {
+      "id": "signals",
+      "name": "Signals",
+      "description": "Waveforms and signal displays.",
+      "icon": "wave",
+      "order": 40
+    },
+    {
+      "id": "basics",
+      "name": "Basics",
+      "description": "Simple shapes, connectors and labels.",
+      "icon": "shapes",
+      "order": 50
+    },
+    {
+      "id": "uncategorized",
+      "name": "Uncategorized",
+      "description": "Symbols not assigned to another category.",
+      "icon": "folder",
+      "order": 100
+    }
+  ],
+  "symbols": [
+    {
+      "id": "arrow",
+      "name": "Arrow",
+      "category": "basics",
+      "style": "default"
+    },
+    {
+      "id": "bar_chart",
+      "name": "Performance bar chart",
+      "category": "signals",
+      "style": "default"
+    },
+    {
+      "id": "checklist",
+      "name": "Verification checklist",
+      "category": "documents",
+      "style": "default"
+    },
+    {
+      "id": "chip",
+      "name": "AI chip",
+      "category": "hardware",
+      "style": "default"
+    },
+    {
+      "id": "circle",
+      "name": "Circle",
+      "category": "basics",
+      "style": "default"
+    },
+    {
+      "id": "cloud",
+      "name": "Deployment cloud",
+      "category": "systems",
+      "style": "default"
+    },
+    {
+      "id": "code_page",
+      "name": "Code page",
+      "category": "documents",
+      "style": "default"
+    },
+    {
+      "id": "code_stack",
+      "name": "Code bundle",
+      "category": "documents",
+      "style": "default"
+    },
+    {
+      "id": "curve_arrow",
+      "name": "Customizable curved arrow",
+      "category": "basics",
+      "style": "default"
+    },
+    {
+      "id": "database",
+      "name": "Database",
+      "category": "systems",
+      "style": "default"
+    },
+    {
+      "id": "enterprise",
+      "name": "Enterprise building",
+      "category": "systems",
+      "style": "default"
+    },
+    {
+      "id": "feedback_cycle",
+      "name": "Five-stage feedback cycle",
+      "category": "systems",
+      "style": "default"
+    },
+    {
+      "id": "folder",
+      "name": "Open folder",
+      "category": "documents",
+      "style": "default"
+    },
+    {
+      "id": "gear",
+      "name": "Settings gear",
+      "category": "systems",
+      "style": "default"
+    },
+    {
+      "id": "git_symbol",
+      "name": "Git tool symbol",
+      "category": "systems",
+      "style": "default"
+    },
+    {
+      "id": "graduate_cap",
+      "name": "Graduation cap",
+      "category": "systems",
+      "style": "default"
+    },
+    {
+      "id": "hierarchy",
+      "name": "Organization chart",
+      "category": "systems",
+      "style": "default"
+    },
+    {
+      "id": "icarus_symbol",
+      "name": "Icarus Verilog tool symbol",
+      "category": "signals",
+      "style": "default"
+    },
+    {
+      "id": "laptop",
+      "name": "Laptop",
+      "category": "hardware",
+      "style": "default"
+    },
+    {
+      "id": "line",
+      "name": "Line",
+      "category": "basics",
+      "style": "default"
+    },
+    {
+      "id": "pages",
+      "name": "Stacked pages",
+      "category": "documents",
+      "style": "default"
+    },
+    {
+      "id": "person",
+      "name": "User profile",
+      "category": "systems",
+      "style": "default"
+    },
+    {
+      "id": "person_computer",
+      "name": "Person with computer",
+      "category": "systems",
+      "style": "default"
+    },
+    {
+      "id": "rectangle",
+      "name": "Rectangle",
+      "category": "basics",
+      "style": "default"
+    },
+    {
+      "id": "report",
+      "name": "Analytics page",
+      "category": "documents",
+      "style": "default"
+    },
+    {
+      "id": "research_flask",
+      "name": "Research flask",
+      "category": "systems",
+      "style": "default"
+    },
+    {
+      "id": "servers",
+      "name": "Server racks",
+      "category": "hardware",
+      "style": "default"
+    },
+    {
+      "id": "sync",
+      "name": "Sync arrows",
+      "category": "systems",
+      "style": "default"
+    },
+    {
+      "id": "text",
+      "name": "Text label",
+      "category": "basics",
+      "style": "default"
+    },
+    {
+      "id": "trophy",
+      "name": "Competition trophy",
+      "category": "systems",
+      "style": "default"
+    },
+    {
+      "id": "vitis_symbol",
+      "name": "Vitis HLS tool symbol",
+      "category": "systems",
+      "style": "default"
+    },
+    {
+      "id": "vivado_symbol",
+      "name": "Vivado tool symbol",
+      "category": "systems",
+      "style": "default"
+    },
+    {
+      "id": "waveform",
+      "name": "Waveform",
+      "category": "signals",
+      "style": "default"
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "version": 1,
+  "description": "A true cut-out gear with a configurable tooth profile.",
+  "tags": [
+    "settings",
+    "cog",
+    "configuration"
+  ],
+  "order": 80,
+  "defaults": {
+    "fill": "#2877B7",
+    "accent": "#82C2F1",
+    "stroke": "#2877B7",
+    "highlight": "#FFFFFF",
+    "stroke_width": 5,
+    "radius": 7,
+    "teeth": 8,
+    "outer_radius": 100,
+    "tooth_depth": 23,
+    "hole_radius": 37
+  },
+  "controls": [
+    {
+      "key": "teeth",
+      "label": "Teeth",
+      "type": "number",
+      "default": 8,
+      "min": 6,
+      "max": 20,
+      "step": 1,
+      "unit": ""
+    },
+    {
+      "key": "outer_radius",
+      "label": "Outer radius",
+      "type": "number",
+      "default": 100,
+      "min": 70,
+      "max": 107,
+      "step": 1,
+      "unit": "u"
+    },
+    {
+      "key": "tooth_depth",
+      "label": "Tooth depth",
+      "type": "number",
+      "default": 23,
+      "min": 8,
+      "max": 30,
+      "step": 1,
+      "unit": "u"
+    },
+    {
+      "key": "hole_radius",
+      "label": "Center hole radius",
+      "type": "number",
+      "default": 37,
+      "min": 17,
+      "max": 59,
+      "step": 1,
+      "unit": "u"
+    }
+  ]
+}

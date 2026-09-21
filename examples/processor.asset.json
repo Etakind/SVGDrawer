@@ -1,0 +1,31 @@
+{
+  "format": "svgdrawer.asset",
+  "schema_version": 1,
+  "name": "Research processor",
+  "asset": {
+    "type": "chip",
+    "params": {
+      "fill": "#1B9F82",
+      "accent": "#D4F4E7",
+      "stroke": "#153E5B",
+      "highlight": "#FFFFFF",
+      "stroke_width": 5.0,
+      "radius": 7.0,
+      "pins": 10,
+      "pin_length": 20,
+      "pin_width": 7,
+      "core_size": 102,
+      "label": "DSP",
+      "font_size": 43
+    },
+    "parts": {}
+  },
+  "output": {
+    "width": 512,
+    "height": 512,
+    "padding": 8,
+    "transparent": true,
+    "background": "#FFFFFF",
+    "preserve_aspect": true
+  }
+}

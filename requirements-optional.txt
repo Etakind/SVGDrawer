@@ -1,0 +1,2 @@
+# Backward-compatible optional dependency list.
+-r requirements-png.txt

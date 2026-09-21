@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "version": 1,
+  "description": "Three geometric lobes used beside a native Vivado text label.",
+  "tags": [
+    "eda",
+    "vivado"
+  ],
+  "defaults": {
+    "fill": "#C8CB24",
+    "accent": "#C8CB24",
+    "stroke": "none",
+    "highlight": "#FFFFFF",
+    "stroke_width": 5,
+    "radius": 7
+  },
+  "controls": [],
+  "order": 100
+}
