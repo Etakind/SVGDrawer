@@ -1,13 +1,21 @@
 # Changelog
 
-## Unreleased — Symbol organization
+## Unreleased — Conda, Python entry points and curated symbols
 
-- Use Symbol terminology and co-locate each symbol's configuration and Python renderer under its Gallery category.
-- Add a compact authoritative category/symbol catalog with unique names, style metadata and an Uncategorized default.
-- Rename source commands to `--add-symbol` and `--init-symbol`; CLI schema 2 uses `symbol`, `symbols` and `symbol_count` without old flag aliases.
-- Write library schema 2 and convert supported schema-1 collections on load/import, preserving old browser storage. Asset recipes remain unchanged.
-- Focus development instructions and launchers on Windows; retain Python rendering across CLI, local browser UI and standalone HTML.
-- Remove file/checksum manifests and packaging checksum generation. Earlier verification reports remain historical.
+- Define the runtime in environment.yml; Conda supplies Python, CairoSVG and native Cairo.
+- Replace BAT/CMD launchers with start.py and remove the manual MSYS2 installer.
+- Add 24 licensed Lucide/Tabler outline symbols, with upstream notices retained in SVG and PNG exports.
+- Clarify five existing display names without changing IDs or geometry; document multi-factor naming and permission for agents to refine names.
+
+## Earlier foundation — One Python application, one shared Gallery
+
+- Use one local Python runtime, port 9178 by default, with directly served frontend assets and a shared disk Gallery for browser and CLI.
+- Remove standalone HTML/Pyodide/CDN, personal browser libraries/converters and the obsolete build workflow.
+- Add shared SVG import, saved variants, metadata/favorite edits, batch move/trash/restore, category management and confirmed permanent removal.
+- Back up active Gallery sources directly as a ZIP; support additive conflict reporting, confirmed full sync and restorable trash snapshots.
+- Keep the category-organized Symbol catalog, unique IDs/names, styles, renderer reuse, recipes and schema-2 CLI responses.
+- Generate PNG only with Python/CairoSVG and project-local Windows Cairo DLL discovery. Preserve all 33 shipped symbols' geometry and part IDs.
+- Refresh instructions, Windows launchers and packaging. No file inventories or checksum manifests. Older reports and release notes below are historical.
 
 ## 3.0.0 — SVGDrawer / Gallery / terminal support
 

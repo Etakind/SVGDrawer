@@ -1,0 +1,31 @@
+<svg width="256" height="256" viewBox="0 0 24 24" fill="none" stroke="#193E5B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" x="0" y="0" preserveAspectRatio="xMidYMid meet">
+  <desc >Mobile phone with a home-button dot
+Source: https://github.com/tabler/tabler-icons/blob/main/icons/outline/device-mobile.svg
+Discovered through https://www.freeicons.org/icons/tabler-icons
+Adaptation: fixed navy stroke, normalized viewport and sanitized markup; original geometry retained.
+
+MIT License
+
+Copyright (c) 2020-2026 Paweł Kuna
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the &quot;Software&quot;), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+</desc><path d="M6 5a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2v-14" data-part="imported-part-1" data-label="Path 1"></path>
+  <path d="M11 4h2" data-part="imported-part-2" data-label="Path 2"></path>
+  <path d="M12 17v.01" data-part="imported-part-3" data-label="Path 3"></path>
+</svg>

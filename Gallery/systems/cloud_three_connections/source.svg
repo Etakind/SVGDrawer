@@ -1,0 +1,32 @@
+<svg width="256" height="256" viewBox="0 0 24 24" fill="none" stroke="#193E5B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" x="0" y="0" preserveAspectRatio="xMidYMid meet">
+  <desc >Cloud with three network connections
+Source: https://github.com/tabler/tabler-icons/blob/main/icons/outline/cloud-computing.svg
+Discovered through https://www.freeicons.org/icons/tabler-icons
+Adaptation: fixed navy stroke, normalized viewport and sanitized markup; original geometry retained.
+
+MIT License
+
+Copyright (c) 2020-2026 Paweł Kuna
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the &quot;Software&quot;), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+</desc><path d="M6.657 16c-2.572 0 -4.657 -2.007 -4.657 -4.483c0 -2.475 2.085 -4.482 4.657 -4.482c.393 -1.762 1.794 -3.2 3.675 -3.773c1.88 -.572 3.956 -.193 5.444 1c1.488 1.19 2.162 3.007 1.77 4.769h.99c1.913 0 3.464 1.56 3.464 3.486c0 1.927 -1.551 3.487 -3.465 3.487h-11.878" data-part="imported-part-1" data-label="Path 1"></path>
+  <path d="M12 16v5" data-part="imported-part-2" data-label="Path 2"></path>
+  <path d="M16 16v4a1 1 0 0 0 1 1h4" data-part="imported-part-3" data-label="Path 3"></path>
+  <path d="M8 16v4a1 1 0 0 1 -1 1h-4" data-part="imported-part-4" data-label="Path 4"></path>
+</svg>

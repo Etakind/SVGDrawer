@@ -1,17 +1,25 @@
 usage: svgdrawer [-h] [--list | --list-all-flat | --list-category [CATEGORY] |
                  --list-color-sets | --describe ID | --list-parts ID |
-                 --create ID | --recipe FILE | --add-category ID |
-                 --add-symbol ID | --init-symbol ID | --validate [ID] |
-                 --build | --serve | --version] [--search SEARCH]
-                 [--color-sets NAME_OR_JSON] [--params JSON_OR_@FILE]
-                 [--set KEY=VALUE] [--parts JSON_OR_@FILE] [--output OUTPUT]
+                 --create ID | --add-category ID | --add-symbol ID |
+                 --init-symbol ID | --validate [ID] | --serve | --version |
+                 --import-svg ID_OR_FILE | --save-symbol ID_OR_FILE |
+                 --update-symbol ID_OR_FILE | --update-category ID_OR_FILE |
+                 --delete-category ID_OR_FILE | --import-gallery ID_OR_FILE |
+                 --move-symbol ID [ID ...] | --delete-symbol ID [ID ...] |
+                 --restore ID [ID ...] | --purge ID [ID ...] | --list-trash |
+                 --empty-trash | --backup-gallery] [--recipe FILE]
+                 [--search SEARCH] [--color-sets NAME_OR_JSON]
+                 [--params JSON_OR_@FILE] [--set KEY=VALUE]
+                 [--parts JSON_OR_@FILE] [--output OUTPUT]
                  [--format {svg,png,both}] [--width WIDTH] [--height HEIGHT]
                  [--size SIZE] [--padding PADDING] [--scale {1,2,4}]
                  [--background HEX | --transparent] [--stretch]
                  [--save-recipe FILE] [--script FILE.py] [--spec FILE.json]
                  [--category ID] [--name NAME] [--description DESCRIPTION]
                  [--tags TAGS] [--order ORDER] [--icon ICON]
-                 [--output-dir OUTPUT_DIR] [--json] [--dry-run] [--force]
+                 [--output-dir OUTPUT_DIR] [--favorite | --unfavorite]
+                 [--id ID] [--style STYLE] [--contents {uncategorized,trash}]
+                 [--yes] [--force-sync] [--json] [--dry-run] [--force]
                  [--timeout TIMEOUT] [--debug] [--port PORT] [--no-browser]
 
 SVGDrawer: browse a Gallery, customize one SVG, or register trusted Python geometry.
@@ -39,9 +47,21 @@ options:
                         drafts/.
   --validate [ID]       Validate all symbols, or one ID; no persistent source
                         changes.
-  --build               Regenerate the single HTML from Gallery/ and app/.
-  --serve               Build and open the local Gallery server.
+  --serve               Open the local Python Gallery server.
   --version             Print SVGDrawer version.
+  --import-svg ID_OR_FILE
+  --save-symbol ID_OR_FILE
+  --update-symbol ID_OR_FILE
+  --update-category ID_OR_FILE
+  --delete-category ID_OR_FILE
+  --import-gallery ID_OR_FILE
+  --move-symbol ID [ID ...]
+  --delete-symbol ID [ID ...]
+  --restore ID [ID ...]
+  --purge ID [ID ...]
+  --list-trash
+  --empty-trash
+  --backup-gallery
 
 Discovery:
   --search SEARCH       Filter list results by ID, name, style, description or
@@ -79,7 +99,7 @@ Customization and export:
 Gallery source management:
   --script FILE.py      Trusted Python file defining render(drawing, params).
   --spec FILE.json      Symbol definition with defaults and UI controls.
-  --category ID         Category ID for an symbol/template.
+  --category ID         Category ID for a symbol/template.
   --name NAME           Human-readable symbol/category name; IDs remain
                         stable.
   --description DESCRIPTION
@@ -90,19 +110,26 @@ Gallery source management:
                         shapes).
   --output-dir OUTPUT_DIR
                         Folder for --init-symbol templates (default drafts).
+  --favorite
+  --unfavorite
+  --id ID               Stable ID for an imported SVG.
+  --style STYLE         Descriptive style, default for new symbols.
+  --contents {uncategorized,trash}
+  --yes                 Confirm permanent removal or full Gallery replacement.
+  --force-sync          Replace the active Gallery from a ZIP, retaining a
+                        trash snapshot.
 
 Automation and safety:
   --json                One versioned JSON success on stdout; errors on
                         stderr; no prompts.
-  --dry-run             Validate and report a create/add/template/build
-                        without publishing files.
+  --dry-run             Validate and report a write without publishing files.
   --force               Explicitly allow replacement. Source updates retain
                         history backups.
   --timeout TIMEOUT     Validation subprocess timeout, 1–300 seconds (default
                         30).
   --debug               Include diagnostic traceback on stderr for unexpected
                         failures.
-  --port PORT           Local --serve port (default 8765).
+  --port PORT           Local --serve port (default 9178).
   --no-browser          Do not launch a browser with --serve.
 
 Examples:

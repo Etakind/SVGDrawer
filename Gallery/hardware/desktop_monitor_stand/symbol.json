@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "version": 1,
+  "kind": "svg",
+  "description": "Desktop display with a narrow pedestal and horizontal foot.",
+  "tags": [
+    "desktop",
+    "monitor",
+    "display",
+    "tabler",
+    "outline"
+  ],
+  "order": 312,
+  "controls": [],
+  "defaults": {
+    "fill": "#DCEBFF",
+    "accent": "#2878D4",
+    "stroke": "#193E5B",
+    "highlight": "#FFFFFF",
+    "stroke_width": 5,
+    "radius": 7
+  },
+  "source": {
+    "collection": "tabler",
+    "icon": "device-desktop",
+    "url": "https://github.com/tabler/tabler-icons/blob/main/icons/outline/device-desktop.svg",
+    "discovery_url": "https://www.freeicons.org/icons/tabler-icons",
+    "license": "MIT",
+    "license_url": "https://github.com/tabler/tabler-icons/blob/main/LICENSE"
+  }
+}

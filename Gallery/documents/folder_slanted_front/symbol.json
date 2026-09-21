@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "version": 1,
+  "kind": "svg",
+  "description": "Empty open folder with a sloping front flap and raised tab.",
+  "tags": [
+    "folder",
+    "directory",
+    "open",
+    "lucide",
+    "outline"
+  ],
+  "order": 310,
+  "controls": [],
+  "defaults": {
+    "fill": "#DCEBFF",
+    "accent": "#2878D4",
+    "stroke": "#193E5B",
+    "highlight": "#FFFFFF",
+    "stroke_width": 5,
+    "radius": 7
+  },
+  "source": {
+    "collection": "lucide",
+    "icon": "folder-open",
+    "url": "https://github.com/lucide-icons/lucide/blob/main/icons/folder-open.svg",
+    "discovery_url": "https://www.freeicons.org/icons/lucide",
+    "license": "ISC / MIT",
+    "license_url": "https://github.com/lucide-icons/lucide/blob/main/LICENSE"
+  }
+}

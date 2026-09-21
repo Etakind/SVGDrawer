@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "version": 1,
+  "kind": "svg",
+  "description": "Angular Bluetooth connection mark with crossing diagonals.",
+  "tags": [
+    "bluetooth",
+    "wireless",
+    "connection",
+    "tabler",
+    "outline"
+  ],
+  "order": 319,
+  "controls": [],
+  "defaults": {
+    "fill": "#DCEBFF",
+    "accent": "#2878D4",
+    "stroke": "#193E5B",
+    "highlight": "#FFFFFF",
+    "stroke_width": 5,
+    "radius": 7
+  },
+  "source": {
+    "collection": "tabler",
+    "icon": "bluetooth",
+    "url": "https://github.com/tabler/tabler-icons/blob/main/icons/outline/bluetooth.svg",
+    "discovery_url": "https://www.freeicons.org/icons/tabler-icons",
+    "license": "MIT",
+    "license_url": "https://github.com/tabler/tabler-icons/blob/main/LICENSE"
+  }
+}

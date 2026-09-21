@@ -1,0 +1,8 @@
+channels:
+  - conda-forge
+  - nodefaults
+dependencies:
+  - python=3.12
+  - cairosvg=2.8.2
+  - cairo>=1.18,<2
+  - pillow>=10,<13

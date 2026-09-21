@@ -21,7 +21,7 @@ class CLITests(unittest.TestCase):
         self.temp = tempfile.TemporaryDirectory(prefix='svgdrawer-test-')
         self.work = Path(self.temp.name)
         self.project = self.work / 'SVGDrawer'
-        shutil.copytree(ROOT, self.project, ignore=shutil.ignore_patterns('__pycache__', '.history', 'tests', 'docs', 'index.html', 'exports'))
+        shutil.copytree(ROOT, self.project, ignore=shutil.ignore_patterns('__pycache__', '.conda', '.history', 'tests', 'docs', 'index.html', 'exports'))
 
     def tearDown(self):
         self.temp.cleanup()
@@ -59,11 +59,15 @@ class CLITests(unittest.TestCase):
 
     def test_lists_and_category_filters(self):
         flat = self.run_cli('--list-all-flat')
-        self.assertEqual(flat['symbol_count'], 33)
+        self.assertEqual(flat['symbol_count'], 57)
         self.assertEqual([x['id'] for x in flat['symbols']], sorted(x['id'] for x in flat['symbols']))
-        self.assertEqual(self.run_cli('--list')['symbol_count'], 33)
+        self.assertEqual(self.run_cli('--list')['symbol_count'], 57)
         self.assertEqual(self.run_cli('--list-category')['category_count'], 6)
-        self.assertEqual(self.run_cli('--list-category', 'hardware')['symbol_count'], 3)
+        catalog = json.loads((self.project / 'Gallery' / 'catalog.json').read_text(encoding='utf-8'))
+        self.assertEqual(
+            self.run_cli('--list-category', 'hardware')['symbol_count'],
+            sum(row['category'] == 'hardware' for row in catalog['symbols']),
+        )
         self.assertEqual(self.run_cli('--list-all-flat', '--search', 'CPU')['symbols'][0]['id'], 'chip')
         self.run_cli('--list-category', 'missing', code=2)
 
@@ -72,12 +76,8 @@ class CLITests(unittest.TestCase):
         self.assertFalse((self.project/'Gallery/elements').exists())
         self.assertFalse((self.project/'Gallery/renderers').exists())
         self.assertFalse((self.project/'Gallery/categories.json').exists())
-        data = self.run_cli('--build')
-        html = Path(data['file']).read_text()
-        self.assertIn('<title>SVGDrawer — Gallery</title>', html)
-        self.assertIn('>Gallery <span', html)
-        self.assertNotIn('Vector Foundry', html)
-        self.assertNotIn('<canvas', html)
+        self.run_cli('--build', code=2)
+        self.assertFalse((self.project/'index.html').exists())
 
     def test_describe_machine_schema(self):
         spec = self.run_cli('--describe', 'chip')
@@ -206,18 +206,15 @@ class CLITests(unittest.TestCase):
         for ident in ('../escape','All','all','custom/path','con'):
             self.run_cli('--add-category',ident,code=2)
 
-    def test_full_scaffold_register_customize_build_workflow(self):
+    def test_full_scaffold_register_and_customize_workflow(self):
+        initial_count = self.run_cli('--list-all-flat')['symbol_count']
         data=self.install_sensor()
         self.assertEqual(data['validation']['symbol_count'],1)
         self.assertTrue((self.project/'Gallery/instruments/sensor/render.py').exists())
         spec=self.run_cli('--describe','sensor')['symbol'];self.assertEqual(spec['category'],'instruments')
         result=self.run_cli('--create','sensor','--set','ports=6','--set','body_width=192','--set','label=TEMP','--color-sets','mint')
         self.assertEqual(result['params']['ports'],6)
-        built=self.run_cli('--build')
-        html=Path(built['file']).read_text()
-        self.assertIn('Gallery/instruments/sensor/render.py',html);self.assertIn('Gallery/__init__.py',html)
-        self.assertNotIn('Gallery/.history/',html)
-        self.assertEqual(built['symbol_count'],34)
+        self.assertEqual(self.run_cli('--list-all-flat')['symbol_count'], initial_count + 1)
 
     def test_embedded_spec_and_minimal_script_registration(self):
         script=self.work/'led.py'
@@ -286,7 +283,7 @@ class CLITests(unittest.TestCase):
 
     def test_validate_all(self):
         report=self.run_cli('--validate')
-        self.assertEqual(report['symbol_count'],33)
+        self.assertEqual(report['symbol_count'], self.run_cli('--list-all-flat')['symbol_count'])
         self.assertGreater(report['case_count'],200)
         self.run_cli('--validate','missing',code=2)
 

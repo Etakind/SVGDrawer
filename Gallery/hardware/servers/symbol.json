@@ -1,12 +1,13 @@
 {
   "schema_version": 1,
-  "version": 1,
+  "version": 2,
   "description": "A bank of dimensional racks with bays and status lights.",
   "tags": [
     "server",
     "rack",
     "datacenter",
-    "hosting"
+    "hosting",
+    "Server racks"
   ],
   "order": 120,
   "defaults": {

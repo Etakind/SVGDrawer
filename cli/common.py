@@ -108,7 +108,7 @@ def gallery_lock(root=ROOT):
         path.unlink(missing_ok=True)
 
 
-def commit_gallery(changes, force=False, root=ROOT):
+def commit_gallery(changes, force=False, root=ROOT, keep_history=True):
     """Publish a validated change with rollback on Python errors and retained old copies.
 
     Caller holds the Gallery lock. This is not a crash-proof database transaction.
@@ -118,7 +118,7 @@ def commit_gallery(changes, force=False, root=ROOT):
     originals = {p: p.read_bytes() if p.exists() else None for p in changes}
     history = None
     existing = {p: b for p, b in originals.items() if b is not None}
-    if existing:
+    if existing and keep_history:
         stamp = datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ') + '-' + uuid.uuid4().hex[:8]
         history = root / 'Gallery/.history' / stamp
         for path, content in existing.items():

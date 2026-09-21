@@ -1,0 +1,64 @@
+<svg width="256" height="256" viewBox="0 0 24 24" fill="none" stroke="#193E5B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" x="0" y="0" preserveAspectRatio="xMidYMid meet">
+  <desc >Square processor with twelve contacts
+Source: https://github.com/lucide-icons/lucide/blob/main/icons/cpu.svg
+Discovered through https://www.freeicons.org/icons/lucide
+Adaptation: fixed navy stroke, normalized viewport and sanitized markup; original geometry retained.
+
+ISC License
+
+Copyright (c) 2026 Lucide Icons and Contributors
+
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
+
+THE SOFTWARE IS PROVIDED &quot;AS IS&quot; AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+
+---
+
+The following Lucide icons are derived from the Feather project:
+
+airplay, alert-circle, alert-octagon, alert-triangle, aperture, arrow-down-circle, arrow-down-left, arrow-down-right, arrow-down, arrow-left-circle, arrow-left, arrow-right-circle, arrow-right, arrow-up-circle, arrow-up-left, arrow-up-right, arrow-up, at-sign, calendar, cast, check, chevron-down, chevron-left, chevron-right, chevron-up, chevrons-down, chevrons-left, chevrons-right, chevrons-up, circle, clipboard, clock, code, columns, command, compass, corner-down-left, corner-down-right, corner-left-down, corner-left-up, corner-right-down, corner-right-up, corner-up-left, corner-up-right, crosshair, database, divide-circle, divide-square, dollar-sign, download, external-link, feather, frown, hash, headphones, help-circle, info, italic, key, layout, life-buoy, link-2, link, loader, lock, log-in, log-out, maximize, meh, minimize, minimize-2, minus-circle, minus-square, minus, monitor, moon, more-horizontal, more-vertical, move, music, navigation-2, navigation, octagon, pause-circle, percent, plus-circle, plus-square, plus, power, radio, rss, search, server, share, shopping-bag, sidebar, smartphone, smile, square, table-2, tablet, target, terminal, trash-2, trash, triangle, tv, type, upload, x-circle, x-octagon, x-square, x, zoom-in, zoom-out
+
+The MIT License (MIT) (for the icons listed above)
+
+Copyright (c) 2013-present Cole Bemis
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the &quot;Software&quot;), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+</desc><path d="M12 20v2" data-part="imported-part-1" data-label="Path 1"></path>
+  <path d="M12 2v2" data-part="imported-part-2" data-label="Path 2"></path>
+  <path d="M17 20v2" data-part="imported-part-3" data-label="Path 3"></path>
+  <path d="M17 2v2" data-part="imported-part-4" data-label="Path 4"></path>
+  <path d="M2 12h2" data-part="imported-part-5" data-label="Path 5"></path>
+  <path d="M2 17h2" data-part="imported-part-6" data-label="Path 6"></path>
+  <path d="M2 7h2" data-part="imported-part-7" data-label="Path 7"></path>
+  <path d="M20 12h2" data-part="imported-part-8" data-label="Path 8"></path>
+  <path d="M20 17h2" data-part="imported-part-9" data-label="Path 9"></path>
+  <path d="M20 7h2" data-part="imported-part-10" data-label="Path 10"></path>
+  <path d="M7 20v2" data-part="imported-part-11" data-label="Path 11"></path>
+  <path d="M7 2v2" data-part="imported-part-12" data-label="Path 12"></path>
+  <rect x="4" y="4" width="16" height="16" rx="2" data-part="imported-part-13" data-label="Rect 13"></rect>
+  <rect x="8" y="8" width="8" height="8" rx="1" data-part="imported-part-14" data-label="Rect 14"></rect>
+</svg>

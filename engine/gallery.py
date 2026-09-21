@@ -1,7 +1,7 @@
 """Validated, file-based gallery. JSON defines the UI; Python modules define geometry.
 
 The catalog locates each symbol's configuration and renderer without a UI switch.
-Renderer code is trusted developer code, never code uploaded through the browser.
+Renderer code is trusted executable Python, including user-approved browser imports.
 """
 from __future__ import annotations
 import copy
@@ -46,6 +46,9 @@ def validate_spec(spec, categories, source='<symbol>'):
     spec.setdefault('category', 'uncategorized')
     spec.setdefault('style', 'default')
     spec.setdefault('renderer', spec['id'])
+    spec.setdefault('kind', 'python')
+    if spec['kind'] not in ('python', 'svg'):
+        fail('kind must be python or svg.')
     require_id(spec['renderer'], f'{source}: renderer owner ID')
     if spec.get('category') not in categories:
         fail(f'Unknown category: {spec.get("category")!r}. Add it to Gallery/catalog.json.')
@@ -125,6 +128,14 @@ def validate_spec(spec, categories, source='<symbol>'):
             fail(f'{key}: overridden text default is invalid.')
     out['defaults'] = defaults
     out.setdefault('order', 100)
+    out.setdefault('tags', [])
+    out.setdefault('controls', [])
+    if 'favorite' in out and not isinstance(out['favorite'], bool):
+        fail('favorite must be true or false.')
+    for key in ('parts', 'output'):
+        if not isinstance(out.get(key, {}), dict):
+            fail(f'{key} must be an object.')
+    out['customizable'] = out['kind'] == 'python' and bool(keys)
     return out
 
 
@@ -161,6 +172,8 @@ class Gallery:
                     raise ValueError(f'Category {ident}: {key} must be text.')
             ids.add(ident)
             self.categories.append(dict(row))
+        if 'uncategorized' not in ids:
+            raise ValueError('Gallery catalog must retain the permanent uncategorized category.')
         self.categories.sort(key=lambda c: (c.get('order', 100), c['name']))
         self.palettes = read_json(self.root / 'Gallery/color_sets.json')
         if not isinstance(self.palettes, list):
@@ -195,10 +208,9 @@ class Gallery:
                 raise ValueError(f'{ident}: duplicate symbol ID or name {spec["name"]!r}.')
             names.add(spec['name'].casefold())
             self.symbols[ident] = spec
-        if not self.symbols:
-            raise ValueError('The gallery contains no symbols.')
         for ident in self.symbols:
-            renderer_path = self.renderer_path(ident)
+            renderer_path = (self.symbol_path(ident) / 'source.svg' if self.symbols[ident]['kind'] == 'svg'
+                             else self.renderer_path(ident))
             if not renderer_path.is_file():
                 raise ValueError(f'{ident}: missing renderer {renderer_path}.')
 
@@ -211,7 +223,7 @@ class Gallery:
         owner = self.symbols[ident]['renderer']
         if owner not in self.symbols:
             raise ValueError(f'{ident}: unknown renderer owner {owner!r}.')
-        if self.symbols[owner]['renderer'] != owner:
+        if self.symbols[owner]['renderer'] != owner or self.symbols[owner]['kind'] != 'python':
             raise ValueError(f'{ident}: renderer {owner!r} must own its render.py.')
         return self.symbol_path(owner) / 'render.py'
 

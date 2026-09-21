@@ -17,7 +17,9 @@ from .customize import (COMMON_CONTROLS, COLOR_ROLES, overrides, svg_parts, vali
 from .manage import add_category, add_symbol, scaffold, run_validation
 
 ACTIONS = ('list', 'list_all_flat', 'list_category', 'list_color_sets', 'describe', 'list_parts',
-           'create', 'recipe', 'add_category', 'add_symbol', 'init_symbol', 'validate', 'build', 'serve', 'version')
+           'create', 'add_category', 'add_symbol', 'init_symbol', 'validate', 'serve', 'version',
+           'import_svg', 'save_symbol', 'update_symbol', 'move_symbol', 'update_category', 'delete_category',
+           'delete_symbol', 'list_trash', 'restore', 'purge', 'empty_trash', 'backup_gallery', 'import_gallery')
 
 
 class Parser(argparse.ArgumentParser):
@@ -45,14 +47,19 @@ def parser():
     actions.add_argument('--describe', metavar='ID', help='Read defaults and control schema without executing renderers.')
     actions.add_argument('--list-parts', metavar='ID', help='Render and list stable inner-part IDs; accepts --set/--params.')
     actions.add_argument('--create', metavar='ID', help='Customize and export a registered Gallery symbol.')
-    actions.add_argument('--recipe', type=Path, metavar='FILE', help='Export from a saved .asset.json recipe.')
+    p.add_argument('--recipe', type=Path, metavar='FILE', help='Export from a saved .asset.json recipe.')
     actions.add_argument('--add-category', metavar='ID', help='Add a persistent source category to Gallery/catalog.json.')
     actions.add_argument('--add-symbol', metavar='ID', help='Validate and register a Python script/specification in Gallery/.')
     actions.add_argument('--init-symbol', metavar='ID', help='Generate editable Python + JSON templates under drafts/.')
     actions.add_argument('--validate', nargs='?', const='*', metavar='ID', help='Validate all symbols, or one ID; no persistent source changes.')
-    actions.add_argument('--build', action='store_true', help='Regenerate the single HTML from Gallery/ and app/.')
-    actions.add_argument('--serve', action='store_true', help='Build and open the local Gallery server.')
+    actions.add_argument('--serve', action='store_true', help='Open the local Python Gallery server.')
     actions.add_argument('--version', action='store_true', help='Print SVGDrawer version.')
+    for flag in ('import-svg', 'save-symbol', 'update-symbol', 'update-category', 'delete-category', 'import-gallery'):
+        actions.add_argument('--' + flag, metavar='ID_OR_FILE')
+    for flag in ('move-symbol', 'delete-symbol', 'restore', 'purge'):
+        actions.add_argument('--' + flag, nargs='+', metavar='ID')
+    for flag in ('list-trash', 'empty-trash', 'backup-gallery'):
+        actions.add_argument('--' + flag, action='store_true')
     browsing = p.add_argument_group('Discovery')
     browsing.add_argument('--search', help='Filter list results by ID, name, style, description or tags.')
     custom = p.add_argument_group('Customization and export')
@@ -75,26 +82,34 @@ def parser():
     manage = p.add_argument_group('Gallery source management')
     manage.add_argument('--script', type=Path, metavar='FILE.py', help='Trusted Python file defining render(drawing, params).')
     manage.add_argument('--spec', type=Path, metavar='FILE.json', help='Symbol definition with defaults and UI controls.')
-    manage.add_argument('--category', metavar='ID', help='Category ID for an symbol/template.')
+    manage.add_argument('--category', metavar='ID', help='Category ID for a symbol/template.')
     manage.add_argument('--name', help='Human-readable symbol/category name; IDs remain stable.')
     manage.add_argument('--description', help='Symbol/category description.')
     manage.add_argument('--tags', help='Comma-separated symbol search tags.')
     manage.add_argument('--order', type=int, help='Display order in the Gallery.')
     manage.add_argument('--icon', help='Category icon key (folder, chip, file, network, wave, shapes).')
     manage.add_argument('--output-dir', default='drafts', help='Folder for --init-symbol templates (default drafts).')
+    favorites = manage.add_mutually_exclusive_group()
+    favorites.add_argument('--favorite', action='store_true')
+    favorites.add_argument('--unfavorite', action='store_true')
+    manage.add_argument('--id', help='Stable ID for an imported SVG.')
+    manage.add_argument('--style', help='Descriptive style, default for new symbols.')
+    manage.add_argument('--contents', choices=('uncategorized', 'trash'))
+    manage.add_argument('--yes', action='store_true', help='Confirm permanent removal or full Gallery replacement.')
+    manage.add_argument('--force-sync', action='store_true', help='Replace the active Gallery from a ZIP, retaining a trash snapshot.')
     common = p.add_argument_group('Automation and safety')
     common.add_argument('--json', action='store_true', help='One versioned JSON success on stdout; errors on stderr; no prompts.')
-    common.add_argument('--dry-run', action='store_true', help='Validate and report a create/add/template/build without publishing files.')
+    common.add_argument('--dry-run', action='store_true', help='Validate and report a write without publishing files.')
     common.add_argument('--force', action='store_true', help='Explicitly allow replacement. Source updates retain history backups.')
     common.add_argument('--timeout', type=int, default=30, help='Validation subprocess timeout, 1–300 seconds (default 30).')
     common.add_argument('--debug', action='store_true', help='Include diagnostic traceback on stderr for unexpected failures.')
-    common.add_argument('--port', type=int, default=8765, help='Local --serve port (default 8765).')
+    common.add_argument('--port', type=int, default=9178, help='Local --serve port (default 9178).')
     common.add_argument('--no-browser', action='store_true', help='Do not launch a browser with --serve.')
     return p
 
 
 def _action(args):
-    return next((k for k in ACTIONS if getattr(args, k) not in (None, False)), None)
+    return next((k for k in ACTIONS if getattr(args, k) not in (None, False)), 'recipe' if args.recipe else None)
 
 
 def check_flags(p, args, argv, action):
@@ -106,7 +121,16 @@ def check_flags(p, args, argv, action):
         'add_category': {'name', 'description', 'order', 'icon', 'force', 'dry_run'},
         'add_symbol': {'script', 'spec', 'category', 'name', 'description', 'tags', 'order', 'force', 'dry_run'},
         'init_symbol': {'output_dir', 'category', 'name', 'description', 'force', 'dry_run'},
-        'validate': set(), 'build': {'output', 'dry_run'}, 'serve': {'port', 'no_browser'}, 'version': set(),
+        'import_svg': {'id', 'name', 'description', 'tags', 'style', 'category', 'dry_run'},
+        'save_symbol': {'recipe', 'name', 'description', 'tags', 'style', 'category', 'dry_run'},
+        'update_symbol': {'name', 'description', 'tags', 'style', 'favorite', 'unfavorite', 'dry_run'},
+        'move_symbol': {'category', 'dry_run'},
+        'update_category': {'name', 'description', 'icon', 'order', 'dry_run'},
+        'delete_category': {'contents', 'dry_run'}, 'delete_symbol': {'dry_run'},
+        'list_trash': set(), 'restore': {'yes', 'dry_run'}, 'purge': {'yes', 'dry_run'},
+        'empty_trash': {'yes', 'dry_run'}, 'backup_gallery': {'output', 'force', 'dry_run'},
+        'import_gallery': {'force_sync', 'yes', 'dry_run'},
+        'validate': set(), 'serve': {'port', 'no_browser'}, 'version': set(),
     }[action] | {'json', 'debug', 'timeout', action}
     for token in argv:
         flag = token.split('=', 1)[0]
@@ -137,7 +161,7 @@ def _items(gal, search=None, category=None):
         q = search.casefold()
         items = [e for e in items if q in ' '.join([e['id'], e['name'], e['style'], e['description'], *e['tags']]).casefold()]
     return [{'id': e['id'], 'name': e['name'], 'category': e['category'], 'description': e['description'],
-             'style': e['style'], 'tags': e['tags'], 'version': e['version']} for e in items]
+             'style': e['style'], 'kind': e['kind'], 'customizable': e['customizable'], 'favorite': e.get('favorite', False), 'tags': e['tags'], 'version': e['version']} for e in items]
 
 
 def _options(args, base=None):
@@ -190,9 +214,9 @@ def prepare(args, gal, ident=None):
     if not isinstance(base_params, dict):
         raise UserError('Recipe params must be a JSON object.')
     asset['params'] = overrides(args, spec, gal, base_params)
-    part_values = json_input(args.parts, '--parts', dict) if args.parts is not None else asset.get('parts', {})
+    part_values = json_input(args.parts, '--parts', dict) if args.parts is not None else asset.get('parts', spec.get('parts', {}))
     asset['parts'] = {}
-    options = _options(args, recipe.get('output', {}) if recipe else None)
+    options = _options(args, recipe.get('output', {}) if recipe else spec.get('output', {}))
     result = render_asset(asset, options)
     available = svg_parts(result['svg'])
     asset = result['asset']
@@ -239,11 +263,11 @@ def create(args, gal):
             atomic_write(targets[-1], json_bytes(recipe), overwrite=args.force)
         if png_path:
             try:
-                import cairosvg
-                png = cairosvg.svg2png(bytestring=svg_bytes, output_width=width, output_height=height)
+                from engine.png import svg_to_png
+                png = svg_to_png(svg_bytes, width, height)
             except (ImportError, OSError) as exc:
                 raise UserError(f'SVG saved. Terminal PNG needs CairoSVG and the Cairo runtime: {exc}. '
-                                'Run python -m pip install -r requirements-png.txt; see docs/AGENT_GUIDE.md.',
+                                'Use conda env update --prefix ./.conda --file environment.yml; see docs/AGENT_GUIDE.md.',
                                 'png_dependency', 5, svg_saved=str(svg_path)) from exc
             except Exception as exc:
                 raise UserError(f'SVG saved, but PNG conversion failed: {exc}', 'png_failed', 5,
@@ -261,16 +285,43 @@ def dispatch(args, action):
         return add_symbol(args)
     if action == 'init_symbol':
         return scaffold(args)
-    if action == 'build':
-        output = Path(args.output).expanduser() if args.output else ROOT / 'index.html'
-        if output.suffix.lower() != '.html':
-            raise UserError('--build output must end in .html.')
-        if args.dry_run:
-            return {'file': str(output.absolute()), 'dry_run': True, 'validation': run_validation(timeout=args.timeout)}
-        from build import build
-        path, symbols, categories = build(output)
-        return {'file': str(path.absolute()), 'symbol_count': symbols, 'category_count': categories,
-                'bytes': path.stat().st_size, 'dry_run': False}
+    from . import operations, trash, archives
+    metadata = {key: getattr(args, key) for key in ('name', 'description', 'tags', 'style', 'category') if getattr(args, key) is not None}
+    if 'tags' in metadata:
+        metadata['tags'] = [t.strip() for t in metadata['tags'].split(',') if t.strip()]
+    if action == 'import_svg':
+        if not args.id:
+            raise UserError('--import-svg requires --id.')
+        return operations.install_symbol(args.id, metadata, source=Path(args.import_svg).read_text(encoding='utf-8'), dry_run=args.dry_run)
+    if action == 'save_symbol':
+        if not args.recipe:
+            raise UserError('--save-symbol requires --recipe.')
+        return operations.install_symbol(args.save_symbol, metadata, recipe=json_input('@' + str(args.recipe), 'recipe', dict), dry_run=args.dry_run)
+    if action == 'update_symbol':
+        if args.favorite or args.unfavorite:
+            metadata['favorite'] = args.favorite
+        return operations.update_symbol(args.update_symbol, metadata, args.dry_run)
+    if action == 'move_symbol':
+        return operations.move_symbols(args.move_symbol, args.category, args.dry_run)
+    if action == 'update_category':
+        values = {k: getattr(args, k) for k in ('name', 'description', 'order', 'icon') if getattr(args, k) is not None}
+        return operations.update_category(args.update_category, values, args.dry_run)
+    if action == 'delete_category':
+        return trash.delete_category(args.delete_category, args.contents, args.dry_run)
+    if action == 'delete_symbol':
+        return trash.delete_symbols(args.delete_symbol, args.dry_run)
+    if action == 'list_trash':
+        return trash.list_trash()
+    if action == 'restore':
+        return trash.restore(args.restore, args.yes, args.dry_run)
+    if action in ('purge', 'empty_trash'):
+        return trash.purge(args.purge if action == 'purge' else None, args.yes, args.dry_run)
+    if action == 'backup_gallery':
+        if not args.output:
+            raise UserError('--backup-gallery requires --output FILE.zip.')
+        return archives.backup(Path(args.output), args.force, args.dry_run)
+    if action == 'import_gallery':
+        return archives.import_archive(Path(args.import_gallery).read_bytes(), args.force_sync, args.yes, args.dry_run)
     gal = gallery()
     if action == 'list':
         items = _items(gal, args.search)
@@ -296,7 +347,7 @@ def dispatch(args, action):
         spec = _spec(gal, args.describe)
         return {'symbol': spec, 'common_controls': [{**c, 'default': spec['defaults'][c['key']]} for c in COMMON_CONTROLS],
                 'source': {'definition': (gal.symbol_path(spec['id']) / 'symbol.json').relative_to(gal.root).as_posix(),
-                           'renderer': gal.renderer_path(spec['id']).relative_to(gal.root).as_posix()},
+                           'renderer': ((gal.symbol_path(spec['id']) / 'source.svg') if spec['kind'] == 'svg' else gal.renderer_path(spec['id'])).relative_to(gal.root).as_posix()},
                 'design_size': 256, 'parts_command': f'python svgdrawer.py --list-parts {spec["id"]} --json'}
     if action == 'list_parts':
         _, _, _, parts = prepare(args, gal, args.list_parts)

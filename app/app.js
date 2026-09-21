@@ -1,12 +1,10 @@
-/* Shared application state and small DOM helpers. Source files are concatenated by build.py. */
+/* Shared application state and small DOM helpers. Served locally by Python. */
 'use strict';
 const SD={
-  boot:JSON.parse(document.getElementById('bootData').textContent),
+  boot:{gallery:{symbols:[],categories:[],palettes:[],settings:{}},thumbnails:{}},
   state:{filter:'all',query:'',sort:'featured',limit:48},
-  library:{format:'svgdrawer.library',schema_version:2,categories:[],symbols:[],favorites:[]},
-  current:null,drafts:new Map(),thumbs:new Map(),thumbJobs:new Set(),managerTab:'categories',
-  storageKey:'svgdrawer.gallery.v2',storageRaw:null,storageBlocked:false,engineStarted:false,libraryReady:false,libraryBusy:false,startupRaw:null,
-  maxLibraryBytes:10000000,
+  current:null,drafts:new Map(),thumbs:new Map(),thumbJobs:new Set(),managerTab:'symbols',
+  engineStarted:false,galleryReady:false,selection:new Set(),trashSelection:new Set(),
 };
 const $=selector=>document.querySelector(selector);
 const $$=selector=>Array.from(document.querySelectorAll(selector));
@@ -62,27 +60,12 @@ function showDialog(id){const dialog=document.getElementById(id);if(!dialog.open
 function closeDialog(id){document.getElementById(id).close();}
 function downloadFile(blob,name){const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),30000);}
 function downloadJSON(value,name){downloadFile(new Blob([JSON.stringify(value,null,2)],{type:'application/json'}),name);}
-function allCategories(){return [...SD.boot.gallery.categories,...SD.library.categories];}
+function allCategories(){return SD.boot.gallery.categories;}
 function categoryName(id){return allCategories().find(c=>c.id===id)?.name||'Uncategorized';}
-function allSymbols(){return [...SD.boot.gallery.symbols,...SD.library.symbols];}
+function allSymbols(){return SD.boot.gallery.symbols;}
 function findItem(id){return allSymbols().find(item=>item.id===id);}
-function baseSpec(item){return SD.boot.gallery.symbols.find(s=>s.id===(item.asset?.type||item.id));}
-function isCustomItem(id){return SD.library.symbols.some(item=>item.id===id);}
+function baseSpec(item){return findItem(item.asset?.type||item.id);}
 function persistentItem(id){return !!findItem(id);}
-function persistLibrary(){
-  if(SD.storageBlocked||!SD.libraryReady)return;
-  try{localStorage.setItem(SD.storageKey,JSON.stringify(SD.library));}
-  catch(error){$('#storageNoticeText').textContent='Browser storage is unavailable or full. New changes are only in memory: download a Gallery backup before closing.';$('#storageNotice').classList.remove('hidden');$('#recoverStorage').textContent='Download Gallery backup';SD.storageRaw=null;}
-}
-async function commitLibrary(candidate){
-  if(SD.libraryBusy)throw Error('A library update is still in progress. Try again in a moment.');
-  SD.libraryBusy=true;$('#managerPanel').setAttribute('aria-busy','true');
-  try {
-    const next=await SD.engine.request({action:'validate_library',library:candidate});
-    SD.library=next;persistLibrary();SD.refreshGallery();return next;
-  } finally {SD.libraryBusy=false;$('#managerPanel').setAttribute('aria-busy','false');}
-}
 function categoryOptions(selected){return allCategories().map(c=>`<option value="${esc(c.id)}" ${c.id===selected?'selected':''}>${esc(c.name)}</option>`).join('');}
-function libraryError(error){toast(error.message||error,true);if($('#libraryDialog').open)SD.renderManager?.();console.error(error);}
-SD.boot.gallery.symbols.forEach(e=>SD.thumbs.set(e.id,SD.boot.thumbnails[e.id]));
-SD.engine=new PythonEngine(SD.boot,(text,mode)=>{const el=$('#engineStatus');el.className='engine-status '+mode;el.querySelector('span').textContent=text;SD.updateDownloadState?.();});
+function libraryError(error){toast(error.message||error,true);console.error(error);}
+SD.engine=new PythonEngine((text,mode)=>{const el=$('#engineStatus');el.className='engine-status '+mode;el.querySelector('span').textContent=text;SD.updateDownloadState?.();});

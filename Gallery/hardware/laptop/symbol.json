@@ -1,11 +1,12 @@
 {
   "schema_version": 1,
-  "version": 1,
+  "version": 2,
   "description": "An adjustable display, bezel, keyboard and laptop base.",
   "tags": [
     "computer",
     "display",
-    "notebook"
+    "notebook",
+    "Laptop"
   ],
   "order": 110,
   "defaults": {

@@ -1,6 +1,7 @@
 __pycache__/
 *.py[cod]
 .venv/
+.conda/
 .pytest_cache/
 tests/output/
 *.log
@@ -9,5 +10,5 @@ Gallery/.write.lock
 Gallery/.history/
 drafts/
 exports/
-# index.html is a generated release artifact. Edit app/, engine/, cli/ and Gallery/.
+Gallery/.trash/
 dist/

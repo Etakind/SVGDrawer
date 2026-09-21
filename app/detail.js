@@ -1,5 +1,5 @@
 /* One-symbol product detail, schema-driven controls and per-part customization. */
-SD.makeDraft=function(item){return {asset:clone(item.asset||{type:item.id,params:item.defaults,parts:{}}),output:clone(item.output||DEFAULT_OUTPUT),filename:safeName(item.name),pngScale:2,pngEngine:'auto'};};
+SD.makeDraft=function(item){return {asset:clone(item.asset||{type:item.id,params:item.defaults,parts:item.parts||{}}),output:clone({...DEFAULT_OUTPUT,...item.output}),filename:safeName(item.name),pngScale:2};};
 SD.openAsset=function(idOrItem,tab='customize'){
   const item=typeof idOrItem==='string'?findItem(idOrItem):idOrItem;if(!item)return;
   if(SD.current)SD.closeAsset();
@@ -16,7 +16,7 @@ SD.openAsset=function(idOrItem,tab='customize'){
 SD.closeAsset=function(){
   if(!SD.current)return;SD.finishEdit();SD.drafts.set(SD.current.item.id,clone(SD.current.draft));clearTimeout(SD.current.renderTimer);SD.current=null;
 };
-SD.updateFavorite=function(){const c=SD.current;if(!c)return;const on=SD.library.favorites.includes(c.item.id),button=$('#detailFavorite');button.classList.toggle('active',on);button.setAttribute('aria-pressed',on);button.setAttribute('aria-label',on?'Unfavorite symbol':'Favorite symbol');button.disabled=!persistentItem(c.item.id)||!SD.libraryReady;};
+SD.updateFavorite=function(){const c=SD.current;if(!c)return;const on=!!findItem(c.item.id)?.favorite,button=$('#detailFavorite');button.classList.toggle('active',on);button.setAttribute('aria-pressed',on);button.setAttribute('aria-label',on?'Unfavorite symbol':'Favorite symbol');button.disabled=!persistentItem(c.item.id)||!SD.galleryReady;};
 SD.beginEdit=function(){const c=SD.current;if(c&&!c.baseline)c.baseline=clone(c.draft);};
 SD.finishEdit=function(){const c=SD.current;if(!c||!c.baseline)return;if(JSON.stringify(c.baseline)!==JSON.stringify(c.draft)){c.history.push(c.baseline);if(c.history.length>60)c.history.shift();c.future=[];}c.baseline=null;SD.updateHistory();};
 SD.change=function(fn){if(!SD.current)return;SD.finishEdit();SD.beginEdit();fn(SD.current.draft);SD.finishEdit();SD.renderSettings();SD.schedulePreview();SD.updateOutputSummary();};
@@ -44,7 +44,7 @@ SD.renderSettings=function(){
   $('#artPreview').classList.toggle('parts-mode',c.tab==='parts');
   let body='';
   if(c.tab==='customize'){
-    if(d.asset.type==='custom'){
+    if(d.asset.type==='custom'||spec?.kind==='svg'){
       body=section('Your imported vector',`<p class="section-note">This is static SVG artwork. Use Inner parts to recolor individual shapes and change their width or height. For automatic counts and geometry controls, add a Python renderer to the project.</p><button class="button" data-go-parts>${icon('sliders')}Edit inner parts</button>`,'','shapes');
     }else{
       const palettes=SD.boot.gallery.palettes.map((pal,i)=>`<button class="palette" data-palette-index="${i}" title="Apply ${esc(pal.name)} palette"><span class="palette-swatches"><i style="background:${esc(pal.fill)}"></i><i style="background:${esc(pal.accent)}"></i><i style="background:${esc(pal.stroke)}"></i></span><span class="palette-name">${esc(pal.name)}</span></button>`).join('');
@@ -64,8 +64,8 @@ SD.renderSettings=function(){
     const o=d.output;
     body+=section('Download size',`<div class="output-presets">${[128,256,512,1024].map(size=>`<button data-output-size="${size}" class="${o.width===size&&o.height===size?'active':''}">${size} px</button>`).join('')}</div><div class="two-fields"><label class="field">Width (px)<input type="number" min="16" max="4096" step="1" value="${o.width}" data-scope="output" data-key="width" data-kind="number"></label><label class="field">Height (px)<input type="number" min="16" max="4096" step="1" value="${o.height}" data-scope="output" data-key="height" data-kind="number"></label></div>${checkControl('preserve_aspect','Preserve icon proportions',o.preserve_aspect,'output')}${numberControl('padding','Extra padding',o.padding,0,96,1,'u','output')}`,'One symbol only','download');
     body+=section('Background',checkControl('transparent','Transparent background',o.transparent,'output')+(o.transparent?'':colorControl('background','Background color',o.background,'output',false)),'Preview color is separate','checker');
-    body+=section('PNG settings',selectControl('pngScale','PNG resolution',String(d.pngScale),[['1','1× — standard'],['2','2× — retina'],['4','4× — high resolution']],'ui')+selectControl('pngEngine','Rasterize SVG with',d.pngEngine,[['auto',SD.engine.pythonPNG?'Automatic — Python / CairoSVG':'Automatic — browser'],['browser','Browser'],...(SD.engine.pythonPNG?[['python','Python / CairoSVG']]:[])],'ui')+`<div class="export-summary-box" id="exportSizeInfo"></div>`,'SVG is always generated first','wave');
-    body+=section('File & source',textControl('filename','File name',d.filename,'ui',90)+`<div class="export-tools"><button data-view-source>${icon('code')}View generated SVG</button><button data-save-recipe>${icon('file')}Save editable recipe (.asset.json)</button><button data-python-script>${icon('code')}Download Python script (.py)</button></div>`,'','file');
+    body+=section('PNG settings',selectControl('pngScale','PNG resolution',String(d.pngScale),[['1','1× — standard'],['2','2× — retina'],['4','4× — high resolution']],'ui')+`<div class="export-summary-box" id="exportSizeInfo"></div>`,'SVG is always generated first','wave');
+    body+=section('File & source',textControl('filename','File name',d.filename,'ui',90)+`<div class="export-tools"><button data-view-source>${icon('code')}View generated SVG</button><button data-save-recipe>${icon('file')}Save editable recipe (.asset.json)</button></div>`,'','file');
   }
   $('#settingsPanel').innerHTML=body;SD.highlightPart();SD.updateOutputSummary();
 };
@@ -107,69 +107,16 @@ SD.renderPreview=async function(c,seq){
   }catch(error){if(SD.current===c&&seq===c.renderSeq){$('#renderStatus').textContent='Preview could not render';toast(error.message,true);}}
 };
 SD.updateOutputSummary=function(){const c=SD.current;if(!c)return;const o=c.draft.output;$('#outputSummary').textContent=`${o.width} × ${o.height} · ${o.transparent?'Transparent':'Solid background'}`;const info=$('#exportSizeInfo');if(info){const width=o.width*c.draft.pngScale,height=o.height*c.draft.pngScale;info.textContent=`SVG: ${o.width} × ${o.height} px (vector). PNG: ${width} × ${height} px. ${width>8192||height>8192||width*height>50000000?'Too large: lower the size or PNG resolution.':'Padding is included within the requested output size.'}`;}};
-SD.updateDownloadState=function(){for(const id of ['#downloadSVG','#downloadPNG'])$(id).disabled=!SD.engine?.ready||!!SD.exporting;$('#saveVariant').disabled=!SD.engine?.ready||!SD.libraryReady||!!SD.exporting;};
-async function svgToPNG(svg,width,height,scale){
-  const w=Math.round(width*scale),h=Math.round(height*scale);if(w>8192||h>8192||w*h>50000000)throw Error('PNG limit: 8192 pixels per side and 50 megapixels. Lower the size or resolution.');
-  const url=URL.createObjectURL(new Blob([svg],{type:'image/svg+xml;charset=utf-8'}));
-  try{return await new Promise((resolve,reject)=>{const image=new Image();const timer=setTimeout(()=>reject(Error('SVG-to-PNG conversion timed out.')),15000);image.onload=()=>{clearTimeout(timer);try{const canvas=document.createElement('canvas');canvas.width=w;canvas.height=h;const ctx=canvas.getContext('2d');if(!ctx)throw Error('A browser rasterizer is not available.');ctx.drawImage(image,0,0,w,h);canvas.toBlob(blob=>blob?resolve(blob):reject(Error('PNG encoding failed.')),'image/png');}catch(error){reject(error);}};image.onerror=()=>{clearTimeout(timer);reject(Error('The browser could not rasterize this SVG.'));};image.src=url;});}finally{URL.revokeObjectURL(url);}
-}
+SD.updateDownloadState=function(){for(const id of ['#downloadSVG','#downloadPNG'])$(id).disabled=!SD.engine?.ready||!!SD.exporting;$('#saveVariant').disabled=!SD.engine?.ready||!SD.galleryReady||!!SD.exporting;};
 SD.downloadAsset=async function(format){
   const c=SD.current;if(!c||!SD.engine.ready||SD.exporting)return;SD.finishEdit();const d=clone(c.draft);SD.exporting=true;SD.updateDownloadState();
   try{
     const result=await SD.engine.request({action:'export',asset:d.asset,options:d.output});let blob;
     if(format==='svg')blob=new Blob([result.svg],{type:'image/svg+xml;charset=utf-8'});
-    else if(d.pngEngine==='python'||(d.pngEngine==='auto'&&SD.engine.pythonPNG))blob=await SD.engine.png(d.asset,d.output,d.pngScale);
-    else blob=await svgToPNG(result.svg,result.width,result.height,d.pngScale);
+    else blob=await SD.engine.png(d.asset,d.output,d.pngScale);
     downloadFile(blob,safeName(d.filename)+'.'+format);toast(`${format.toUpperCase()} ready — one symbol, no layout attached.`);
   }catch(error){libraryError(error);}finally{SD.exporting=false;SD.updateDownloadState();}
 };
 SD.recipe=function(){const c=SD.current;if(!c)return null;return {format:'svgdrawer.asset',schema_version:1,name:c.item.name,asset:clone(c.draft.asset),output:clone(c.draft.output)};};
 SD.saveRecipe=function(){if(!SD.current)return;SD.finishEdit();downloadJSON(SD.recipe(),safeName(SD.current.draft.filename)+'.asset.json');toast('Editable recipe saved.');};
 SD.showSource=async function(){try{const c=SD.current;if(!c)return;SD.finishEdit();const result=await SD.engine.request({action:'export',asset:clone(c.draft.asset),options:clone(c.draft.output)});SD.sourceExport={svg:result.svg,name:safeName(c.draft.filename)};$('#sourceText').value=result.svg.replace(/></g,'>\n<');showDialog('sourceDialog');}catch(error){libraryError(error);}};
-SD.downloadPython=function(){
-  const c=SD.current;if(!c)return;SD.finishEdit();const filesLiteral=JSON.stringify(JSON.stringify(SD.boot.files));const recipeLiteral=JSON.stringify(JSON.stringify(SD.recipe()));
-  const code=`#!/usr/bin/env python3
-"""Render a SVGDrawer asset with Python. No installation needed for SVG.
-Run: python this_file.py
-Optional PNG: python this_file.py --png  (requires CairoSVG)
-"""
-import argparse
-import json
-from pathlib import Path
-import sys
-import tempfile
-
-FILES = json.loads(${filesLiteral})
-RECIPE = json.loads(${recipeLiteral})
-
-def main():
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--output', default=${JSON.stringify(safeName(c.draft.filename)+'.svg')})
-    parser.add_argument('--png', action='store_true')
-    args = parser.parse_args()
-    output = Path(args.output).resolve()
-    with tempfile.TemporaryDirectory(prefix='svgdrawer-') as directory:
-        root = Path(directory)
-        for name, content in FILES.items():
-            path = root / name
-            path.parent.mkdir(parents=True, exist_ok=True)
-            path.write_text(content, encoding='utf-8')
-        sys.path.insert(0, str(root))
-        from engine import handle_request
-        result = handle_request({'action': 'export', 'asset': RECIPE['asset'], 'options': RECIPE['output']})
-        output.write_text(result['svg'], encoding='utf-8')
-        print('Saved', output)
-        if args.png:
-            try:
-                import cairosvg
-            except (ImportError, OSError) as exc:
-                raise SystemExit('SVG was saved. Install CairoSVG and its Cairo runtime for PNG: ' + str(exc))
-            png = output.with_suffix('.png')
-            cairosvg.svg2png(bytestring=result['svg'].encode('utf-8'), write_to=str(png))
-            print('Saved', png)
-
-if __name__ == '__main__':
-    main()
-`;
-  downloadFile(new Blob([code],{type:'text/x-python;charset=utf-8'}),safeName(c.draft.filename)+'.py');toast('Self-contained Python renderer downloaded.');
-};

@@ -64,7 +64,7 @@
     },
     {
       "id": "chip",
-      "name": "AI chip",
+      "name": "Square processor with adjustable pin rows",
       "category": "hardware",
       "style": "default"
     },
@@ -100,7 +100,7 @@
     },
     {
       "id": "database",
-      "name": "Database",
+      "name": "Cylindrical database with adjustable tiers",
       "category": "systems",
       "style": "default"
     },
@@ -154,7 +154,7 @@
     },
     {
       "id": "laptop",
-      "name": "Laptop",
+      "name": "Laptop with adjustable keyboard rows",
       "category": "hardware",
       "style": "default"
     },
@@ -202,7 +202,7 @@
     },
     {
       "id": "servers",
-      "name": "Server racks",
+      "name": "Perspective server racks with adjustable bays",
       "category": "hardware",
       "style": "default"
     },
@@ -238,9 +238,153 @@
     },
     {
       "id": "waveform",
-      "name": "Waveform",
+      "name": "Gridded waveform display with selectable signal",
       "category": "signals",
       "style": "default"
+    },
+    {
+      "id": "processor_twelve_contacts",
+      "name": "Square processor with twelve contacts",
+      "category": "hardware",
+      "style": "rounded-outline"
+    },
+    {
+      "id": "circuit_board_tracks",
+      "name": "Circuit board with routed tracks",
+      "category": "hardware",
+      "style": "rounded-outline"
+    },
+    {
+      "id": "memory_module_edge_contacts",
+      "name": "Memory module with edge contacts",
+      "category": "hardware",
+      "style": "rounded-outline"
+    },
+    {
+      "id": "storage_drive_indicator",
+      "name": "Storage drive with activity indicator",
+      "category": "hardware",
+      "style": "rounded-outline"
+    },
+    {
+      "id": "wireless_router_antenna",
+      "name": "Wireless router with signal arcs",
+      "category": "hardware",
+      "style": "rounded-outline"
+    },
+    {
+      "id": "network_three_endpoints",
+      "name": "Network with three connected nodes",
+      "category": "systems",
+      "style": "rounded-outline"
+    },
+    {
+      "id": "workflow_square_nodes",
+      "name": "Workflow with connected square nodes",
+      "category": "systems",
+      "style": "rounded-outline"
+    },
+    {
+      "id": "version_control_branch",
+      "name": "Version-control branch with commit nodes",
+      "category": "systems",
+      "style": "rounded-outline"
+    },
+    {
+      "id": "code_document_brackets",
+      "name": "Document with code brackets",
+      "category": "documents",
+      "style": "rounded-outline"
+    },
+    {
+      "id": "chart_document_columns",
+      "name": "Document with three chart columns",
+      "category": "documents",
+      "style": "rounded-outline"
+    },
+    {
+      "id": "folder_slanted_front",
+      "name": "Open folder with slanted front flap",
+      "category": "documents",
+      "style": "rounded-outline"
+    },
+    {
+      "id": "database_horizontal_dividers",
+      "name": "Cylindrical database with horizontal dividers",
+      "category": "systems",
+      "style": "rounded-outline"
+    },
+    {
+      "id": "desktop_monitor_stand",
+      "name": "Desktop monitor on a pedestal stand",
+      "category": "hardware",
+      "style": "rounded-outline"
+    },
+    {
+      "id": "laptop_single_line_base",
+      "name": "Laptop with a single-line base",
+      "category": "hardware",
+      "style": "rounded-outline"
+    },
+    {
+      "id": "mobile_home_button",
+      "name": "Mobile phone with a home-button dot",
+      "category": "hardware",
+      "style": "rounded-outline"
+    },
+    {
+      "id": "server_two_bays",
+      "name": "Server with two stacked bays",
+      "category": "hardware",
+      "style": "rounded-outline"
+    },
+    {
+      "id": "cloud_three_connections",
+      "name": "Cloud with three network connections",
+      "category": "systems",
+      "style": "rounded-outline"
+    },
+    {
+      "id": "usb_branch_connector",
+      "name": "USB connector with branching terminals",
+      "category": "hardware",
+      "style": "rounded-outline"
+    },
+    {
+      "id": "antenna_radiating_mast",
+      "name": "Antenna mast with radiating arcs",
+      "category": "signals",
+      "style": "rounded-outline"
+    },
+    {
+      "id": "bluetooth_crossed_rune",
+      "name": "Bluetooth crossed-rune symbol",
+      "category": "signals",
+      "style": "rounded-outline"
+    },
+    {
+      "id": "histogram_adjacent_bars",
+      "name": "Histogram with adjacent vertical bars",
+      "category": "signals",
+      "style": "rounded-outline"
+    },
+    {
+      "id": "sine_wave_crest_trough",
+      "name": "Sine wave with one crest and trough",
+      "category": "signals",
+      "style": "rounded-outline"
+    },
+    {
+      "id": "square_wave_raised_pulse",
+      "name": "Square wave with a raised pulse",
+      "category": "signals",
+      "style": "rounded-outline"
+    },
+    {
+      "id": "exchange_opposed_arrows",
+      "name": "Exchange with opposed horizontal arrows",
+      "category": "basics",
+      "style": "rounded-outline"
     }
   ]
 }

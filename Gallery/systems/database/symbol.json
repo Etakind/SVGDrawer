@@ -1,12 +1,13 @@
 {
   "schema_version": 1,
-  "version": 1,
+  "version": 2,
   "description": "A cylindrical data store with independently editable layers.",
   "tags": [
     "storage",
     "data",
     "sql",
-    "cylinder"
+    "cylinder",
+    "Database"
   ],
   "order": 70,
   "defaults": {

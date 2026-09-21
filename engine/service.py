@@ -1,26 +1,32 @@
 """One asset in, one SVG out. No scenes, coordinates, layers or drawing canvas."""
 from __future__ import annotations
-import copy
+import importlib
+import sys
 import html
-import json
-import math
 import re
-import xml.etree.ElementTree as ET
-from .gallery import Gallery, COMMON, require_id, RESERVED_CATEGORIES
+from .gallery import Gallery, GalleryBusy, ROOT, COMMON
 from .primitives import Drawing, color, num, fmt, tag
 from .sanitize import safe_import
 
 _GALLERY = None
-LIBRARY_FORMAT = 'svgdrawer.library'
 RECIPE_FORMAT = 'svgdrawer.asset'
-MAX_SYMBOLS = 1000
-MAX_CATEGORIES = 100
+_GALLERY_STAMP = None
 
 
 def gallery():
-    global _GALLERY
-    if _GALLERY is None:
+    global _GALLERY, _GALLERY_STAMP
+    if (ROOT / 'Gallery/.write.lock').exists():
+        raise GalleryBusy('Gallery is being updated. Retry shortly.')
+    stamp = (ROOT / 'Gallery/catalog.json').stat().st_mtime_ns
+    if _GALLERY is None or stamp != _GALLERY_STAMP:
+        # Catalog publication is the revision signal shared by CLI and server.
+        # Evict trusted source modules so an already-running UI sees replacements.
+        for name in list(sys.modules):
+            if name == 'Gallery' or name.startswith('Gallery.'):
+                del sys.modules[name]
+        importlib.invalidate_caches()
         _GALLERY = Gallery()
+        _GALLERY_STAMP = stamp
     return _GALLERY
 
 
@@ -32,7 +38,7 @@ def normalize_parts(parts):
     if not isinstance(parts, dict):
         return {}
     if len(parts) > 3000:
-        raise ValueError('An symbol can have at most 3,000 part overrides.')
+        raise ValueError('A symbol can have at most 3,000 part overrides.')
     out = {}
     for key, value in parts.items():
         if not isinstance(key, str) or not re.fullmatch(r'[\w-]{1,120}', key) or not isinstance(value, dict):
@@ -80,12 +86,12 @@ def normalize_asset(asset, sanitize_source=False):
             p[key] = value if value in c['options'] else c['default']
         else:
             p[key] = clean_text(value, c.get('max_length', 80))
-    result = {'type': kind, 'params': p, 'parts': normalize_parts(asset.get('parts', {}))}
+    result = {'type': kind, 'params': p, 'parts': normalize_parts(asset.get('parts', cat.symbols.get(kind, {}).get('parts', {})))}
     if kind == 'custom':
         source = asset.get('raw_svg', '')
         if not isinstance(source, str) or len(source) > 400000:
             raise ValueError('SVG imports must contain at most 400,000 characters.')
-        # The source is sanitized for every render, even after library validation.
+        # The source is sanitized for every render, including stored SVG sources.
         result['raw_svg'] = safe_import(source, prefix='') if sanitize_source else source
     return result
 
@@ -102,10 +108,12 @@ def normalize_options(options):
 
 def render_asset(asset, options=None, clean=False):
     asset = normalize_asset(asset)
-    o = normalize_options(options)
+    spec = gallery().symbols.get(asset['type'], {})
+    o = normalize_options({**spec.get('output', {}), **(options or {})})
     p = o['padding']; size = 256 + 2*p
-    if asset['type'] == 'custom':
-        content = safe_import(asset['raw_svg'], prefix='asset', overrides=asset['parts'])
+    if asset['type'] == 'custom' or spec.get('kind') == 'svg':
+        source = asset['raw_svg'] if asset['type'] == 'custom' else (gallery().symbol_path(asset['type']) / 'source.svg').read_text(encoding='utf-8')
+        content = safe_import(source, prefix='asset', overrides=asset['parts'])
     else:
         drawing = Drawing(asset['params'], asset['parts'])
         gallery().builder(asset['type'])(drawing, asset['params'])
@@ -124,59 +132,6 @@ def render_asset(asset, options=None, clean=False):
     return {'svg': svg, 'width': o['width'], 'height': o['height'], 'asset': asset, 'options': o}
 
 
-def validate_library(library):
-    if not isinstance(library, dict) or library.get('format') not in (LIBRARY_FORMAT, 'vector-foundry.library') or library.get('schema_version') not in (1, 2):
-        raise ValueError('Expected a SVGDrawer library backup with schema_version 1 or 2. Canvas projects are not library backups.')
-    if len(json.dumps(library, ensure_ascii=False).encode('utf-8')) > 10_000_000:
-        raise ValueError('A library backup may not exceed 10 MB.')
-    cats = library.get('categories', [])
-    # Convert the collection field, never the asset recipes or stable symbol IDs.
-    field = 'elements' if library['schema_version'] == 1 else 'symbols'
-    if field not in library:
-        raise ValueError(f'Library schema {library["schema_version"]} requires {field}.')
-    items = library[field]
-    favs = library.get('favorites', [])
-    if not isinstance(cats, list) or len(cats) > MAX_CATEGORIES:
-        raise ValueError(f'A library may contain at most {MAX_CATEGORIES} custom categories.')
-    if not isinstance(items, list) or len(items) > MAX_SYMBOLS:
-        raise ValueError(f'A library may contain at most {MAX_SYMBOLS} custom symbols.')
-    builtin_cats = {c['id'] for c in gallery().categories}
-    category_ids = set(builtin_cats)
-    clean_cats, clean_items = [], []
-    for c in cats:
-        if not isinstance(c, dict):
-            raise ValueError('A category must be an object.')
-        ident = require_id(c.get('id'), 'Custom category ID')
-        name = clean_text(c.get('name', ''), 60).strip()
-        if not name or ident in category_ids or ident in RESERVED_CATEGORIES:
-            raise ValueError(f'Duplicate/reserved category ID or empty category name: {ident}.')
-        category_ids.add(ident)
-        clean_cats.append(dict(id=ident, name=name, description=clean_text(c.get('description', ''), 240), icon='folder', order=1000+len(clean_cats)))
-    item_ids = set(gallery().symbols)
-    for item in items:
-        if not isinstance(item, dict):
-            raise ValueError('A custom symbol must be an object.')
-        ident = require_id(item.get('id'), 'Custom symbol ID')
-        name = clean_text(item.get('name', ''), 100).strip()
-        if not name or ident in item_ids:
-            raise ValueError(f'Duplicate symbol ID or empty name: {ident}.')
-        item_ids.add(ident)
-        category = item.get('category')
-        if category not in category_ids:
-            raise ValueError(f'{name}: unknown category {category!r}.')
-        tags = item.get('tags', [])
-        if not isinstance(tags, list):
-            raise ValueError(f'{name}: tags must be an array.')
-        asset = normalize_asset(item.get('asset'), sanitize_source=True)
-        # Validate that the geometry is renderable, not just that the JSON parses.
-        render_asset(asset, {'width': 256, 'height': 256})
-        clean_items.append(dict(id=ident, name=name, category=category,
-            description=clean_text(item.get('description', ''), 300), tags=[clean_text(t, 40) for t in tags[:20]],
-            asset=asset, output=normalize_options(item.get('output')), created_at=clean_text(item.get('created_at', ''), 40)))
-    clean_favs = list(dict.fromkeys(x for x in favs if isinstance(x, str) and x in item_ids)) if isinstance(favs, list) else []
-    return dict(format=LIBRARY_FORMAT, schema_version=2, categories=clean_cats, symbols=clean_items, favorites=clean_favs)
-
-
 def handle_request(payload):
     if not isinstance(payload, dict):
         raise ValueError('The request must be an object.')
@@ -189,8 +144,6 @@ def handle_request(payload):
         source = payload.get('source')
         asset = normalize_asset({'type': 'custom', 'raw_svg': source}, sanitize_source=True)
         return render_asset(asset, {'width': 256, 'height': 256})
-    if action == 'validate_library':
-        return validate_library(payload.get('library'))
     if action == 'validate_recipe':
         recipe = payload.get('recipe')
         if not isinstance(recipe, dict) or recipe.get('format') not in (RECIPE_FORMAT, 'vector-foundry.asset') or recipe.get('schema_version') != 1:

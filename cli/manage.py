@@ -34,7 +34,7 @@ def run_validation(root=ROOT, ids=None, timeout=30):
 def _stage(target):
     for folder in ('Gallery', 'engine', 'cli'):
         shutil.copytree(ROOT / folder, target / folder,
-                        ignore=shutil.ignore_patterns('__pycache__', '.history', '.write.lock', '*.pyc'))
+                        ignore=shutil.ignore_patterns('__pycache__', '.history', '.trash', '.write.lock', '*.pyc'))
 
 
 def _gallery_locked():
@@ -71,7 +71,7 @@ def add_category(args):
         changes[ROOT / 'Gallery/catalog.json'] = json_bytes(catalog)
         backup = None if args.dry_run else commit_gallery(changes, args.force)
         return {'category': row, 'dry_run': args.dry_run, 'backup': backup,
-                'files': [str(p) for p in changes], 'next': 'python svgdrawer.py --build'}
+                'files': [str(p) for p in changes]}
 
 
 def _script_metadata(source):
@@ -126,6 +126,7 @@ def add_symbol(args):
     if source is not None:
         # One own script per symbol. A spec-only variant may reuse another renderer.
         spec['renderer'] = ident
+        spec['kind'] = 'python'
     if not args.script and not args.spec:
         raise UserError('--add-symbol requires --script FILE.py and/or --spec FILE.json.')
     with gallery_lock():
@@ -158,13 +159,15 @@ def add_symbol(args):
             shared = [s['id'] for s in gal.symbols.values() if s['id'] != ident and s['renderer'] == ident]
             if shared:
                 raise UserError(f'Renderer {ident!r} is also used by {shared}.', 'conflict', 3)
+        if old and old['kind'] == 'svg':
+            changes[gal.symbol_path(ident) / 'source.svg'] = None
         if old and gal.symbol_path(ident) != target:
             changes[gal.symbol_path(ident) / 'symbol.json'] = None
             if old['renderer'] == ident:
                 changes[gal.symbol_path(ident) / 'render.py'] = None
         elif old and old['renderer'] == ident and spec['renderer'] != ident:
             changes[target / 'render.py'] = None
-        config = {k: v for k, v in spec.items() if k not in ('id', 'name', 'category', 'style')}
+        config = {k: v for k, v in spec.items() if k not in ('id', 'name', 'category', 'style', 'customizable')}
         if config['renderer'] == ident:
             del config['renderer']
         changes[target / 'symbol.json'] = json_bytes(config)
@@ -191,7 +194,7 @@ def add_symbol(args):
                 cache.unlink(missing_ok=True)
         return {'id': ident, 'name': spec['name'], 'category': spec['category'], 'style': spec['style'], 'version': spec['version'],
                 'files': [str(p) for p in changes], 'dry_run': args.dry_run, 'backup': backup,
-                'validation': report, 'next': 'python svgdrawer.py --build'}
+                'validation': report}
 
 
 TEMPLATE = '''"""{name}: pure Python SVG geometry for SVGDrawer.

@@ -1,13 +1,14 @@
 {
   "schema_version": 1,
-  "version": 1,
+  "version": 2,
   "description": "A digital, sine, triangle or sawtooth waveform on a gridded display.",
   "tags": [
     "signal",
     "digital",
     "sine",
     "oscilloscope",
-    "pulse"
+    "pulse",
+    "Waveform"
   ],
   "order": 130,
   "defaults": {

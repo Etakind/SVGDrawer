@@ -9,3 +9,8 @@ dialog{padding:0;border:1px solid #e1e8e8;border-radius:17px;color:var(--ink);ba
 .palette-grid.compact{display:flex;gap:5px}.palette-grid.compact .palette{flex:1;min-width:0;padding:5px 4px}.palette-grid.compact .palette-name{font-size:7px}.palette-grid.compact .palette-swatches{height:13px}
 
 .sidebar-note .note-icon{display:flex}
+
+.management-row { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:12px 0; border-bottom:1px solid #dde4e8; }
+.management-row small { display:block; color:#657785; margin:4px 0; }
+.manager-actions { display:flex; flex-wrap:wrap; align-items:center; gap:12px; margin:16px 0; }
+.management-row input[type=checkbox] { width:18px; height:18px; margin-right:8px; }

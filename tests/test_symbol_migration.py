@@ -7,10 +7,7 @@ Gallery immutable while still running the same validation and write paths.
 
 from __future__ import annotations
 
-import copy
-import difflib
 import json
-import os
 from pathlib import Path
 import shutil
 import subprocess
@@ -20,11 +17,9 @@ import unittest
 
 
 ROOT = Path(__file__).resolve().parents[1]
-BASELINE = Path(os.environ.get("SVGDRAWER_BASELINE", Path(tempfile.gettempdir()) / "svgdrawer-baseline-current"))
 sys.path.insert(0, str(ROOT))
 
 from engine.gallery import Gallery, validate_spec
-from engine.service import handle_request, validate_library
 
 
 class SymbolMigrationTests(unittest.TestCase):
@@ -48,7 +43,7 @@ class SymbolMigrationTests(unittest.TestCase):
     def copy_registration_project(self, destination: Path) -> None:
         for name in ("Gallery", "engine", "cli"):
             shutil.copytree(ROOT / name, destination / name, ignore=shutil.ignore_patterns("__pycache__"))
-        for name in ("svgdrawer.py", "build.py"):
+        for name in ("svgdrawer.py", "server.py"):
             shutil.copy2(ROOT / name, destination / name)
 
     def test_catalog_is_authoritative_and_sources_are_nested(self) -> None:
@@ -56,7 +51,7 @@ class SymbolMigrationTests(unittest.TestCase):
         catalog = json.loads(catalog_path.read_text(encoding="utf-8"))
         self.assertIsInstance(catalog.get("categories"), list)
         symbols = catalog["symbols"]
-        self.assertEqual(len(symbols), 33)
+        self.assertEqual(len(symbols), 57)
         self.assertTrue((ROOT / "Gallery" / "uncategorized").is_dir())
         self.assertFalse((ROOT / "Gallery" / "elements").exists())
         self.assertFalse((ROOT / "Gallery" / "renderers").exists())
@@ -68,22 +63,27 @@ class SymbolMigrationTests(unittest.TestCase):
         self.assertEqual(len(rows_by_id), len(symbols))
         for row in symbols:
             self.assertEqual(set(row), identities)
-            self.assertEqual(row["style"], "default")
+            config_path = ROOT / "Gallery" / row["category"] / row["id"] / "symbol.json"
+            config = json.loads(config_path.read_text(encoding="utf-8"))
+            expected_style = "rounded-outline" if config.get("kind") == "svg" else "default"
+            self.assertEqual(row["style"], expected_style)
             name = row["name"].strip()
             self.assertEqual(name, row["name"])
             self.assertNotIn(name.casefold(), seen_names)
             seen_names.add(name.casefold())
             source_dir = ROOT / "Gallery" / row["category"] / row["id"]
             self.assertTrue((source_dir / "symbol.json").is_file(), source_dir)
-            self.assertTrue((source_dir / "render.py").is_file(), source_dir)
-            config = json.loads((source_dir / "symbol.json").read_text(encoding="utf-8"))
             self.assertTrue(identities.isdisjoint(config), (row["id"], config))
-            owner = config.get("renderer", row["id"])
-            owner_row = rows_by_id[owner]
-            self.assertTrue(
-                (ROOT / "Gallery" / owner_row["category"] / owner / "render.py").is_file(),
-                owner,
-            )
+            if config.get("kind") == "svg":
+                self.assertTrue((source_dir / "source.svg").is_file(), row["id"])
+                self.assertTrue((source_dir / "LICENSE.txt").is_file(), row["id"])
+            else:
+                owner = config.get("renderer", row["id"])
+                owner_row = rows_by_id[owner]
+                self.assertTrue(
+                    (ROOT / "Gallery" / owner_row["category"] / owner / "render.py").is_file(),
+                    owner,
+                )
 
     def test_discovery_is_lazy_and_does_not_import_renderers(self) -> None:
         script = """
@@ -97,7 +97,7 @@ def reject_renderer(name, *args, **kwargs):
     return real_import(name, *args, **kwargs)
 module.importlib.import_module = reject_renderer
 gallery = Gallery()
-assert len(gallery.symbols) == 33
+assert len(gallery.symbols) == 57
 """
         result = subprocess.run(
             [sys.executable, "-B", "-c", script],
@@ -151,7 +151,7 @@ assert len(gallery.symbols) == 33
 
     def test_cli_schema_two_and_old_management_flags_are_rejected(self) -> None:
         listed = self.successful_data("--list-all-flat")
-        self.assertEqual(listed["symbol_count"], 33)
+        self.assertEqual(listed["symbol_count"], 57)
         self.assertNotIn("elements", listed)
         self.assertTrue(all("style" in symbol for symbol in listed["symbols"]))
 
@@ -164,62 +164,6 @@ assert len(gallery.symbols) == 33
         for old_flag in ("--add-element", "--init-element"):
             result = self.run_cli(old_flag, "sample")
             self.assertNotEqual(result.returncode, 0, old_flag)
-
-    def test_default_renders_and_part_ids_match_captured_baseline(self) -> None:
-        manifest_path = BASELINE / "baseline-manifest.json"
-        if not manifest_path.is_file():
-            self.skipTest(f"baseline not found: {manifest_path}")
-        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
-        self.assertEqual(manifest["element_count"], 33)
-        for symbol_id in manifest["ids"]:
-            with self.subTest(symbol_id=symbol_id):
-                expected = (BASELINE / f"{symbol_id}.svg").read_text(encoding="utf-8")
-                actual = handle_request({"asset": {"type": symbol_id}})["svg"]
-                if expected != actual:
-                    diff = "".join(difflib.unified_diff(expected.splitlines(True), actual.splitlines(True)))
-                    self.fail(diff[:3000])
-                parts = self.successful_data("--list-parts", symbol_id)["parts"]
-                actual_ids = [part["id"] for part in parts]
-                self.assertEqual(actual_ids, manifest["symbols"][symbol_id]["part_ids"])
-
-    def test_library_schema_one_and_vector_foundry_convert_to_schema_two(self) -> None:
-        library = {
-            "format": "svgdrawer.library",
-            "schema_version": 1,
-            "categories": [{"id": "science", "name": "Science"}],
-            "elements": [
-                {
-                    "id": "old-chip",
-                    "name": "Old chip",
-                    "category": "science",
-                    "asset": {"type": "chip", "params": {"pins": 9}, "parts": {}},
-                    "tags": ["legacy"],
-                }
-            ],
-            "favorites": ["old-chip"],
-        }
-        original = copy.deepcopy(library)
-        converted = validate_library(library)
-        self.assertEqual(library, original)
-        self.assertEqual(converted["schema_version"], 2)
-        self.assertIn("symbols", converted)
-        self.assertNotIn("elements", converted)
-        self.assertEqual(converted["symbols"][0]["asset"]["params"]["pins"], 9)
-        self.assertEqual(converted["favorites"], ["old-chip"])
-
-        legacy_format = dict(original, format="vector-foundry.library")
-        self.assertEqual(validate_library(legacy_format)["schema_version"], 2)
-        with self.assertRaises(ValueError):
-            validate_library({"format": "svgdrawer.library", "schema_version": 2, "elements": []})
-
-    def test_browser_storage_uses_v2_and_preserves_legacy_read_keys(self) -> None:
-        app = (ROOT / "app" / "app.js").read_text(encoding="utf-8")
-        init = (ROOT / "app" / "init.js").read_text(encoding="utf-8")
-        self.assertIn("svgdrawer.gallery.v2", app)
-        self.assertIn("schema_version:2", app)
-        self.assertIn("svgdrawer.gallery.v1", init)
-        self.assertIn("vector-foundry.catalog.v1", init)
-        self.assertIn("validate_library", init)
 
 
 class RegistrationMigrationTests(unittest.TestCase):

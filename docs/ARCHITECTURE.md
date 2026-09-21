@@ -1,53 +1,82 @@
-# SVGDrawer architecture
+# Architecture and local HTTP API
 
-## One Gallery, three entry points, one geometry engine
+SVGDrawer has one Python runtime and one disk-backed `Gallery/`. Human users use
+HTML/CSS/JavaScript served by `server.py`; agents use `svgdrawer.py`. Both adapters
+call Python management and rendering modules. There is no standalone HTML,
+Pyodide, CDN loader, browser-owned symbol library or generated root HTML.
 
-```text
-                     Gallery/
-       categories + symbol JSON + Python renderers
-                        │
-              engine/gallery.py (metadata)
-                        │
-          engine/service.py + primitives.py
-                     Python → SVG
-                  ┌─────┴──────┐
-          cli/main.py       app/ + PythonEngine
-          CPython           CPython server OR Pyodide
-              │                      │
-       SVG → CairoSVG PNG    SVG → browser PNG
-                             OR local CairoSVG PNG
+## Data and module boundaries
+
+- `Gallery/catalog.json`: category presentation metadata and symbol identity
+  records (`id`, `name`, `category`, `style`), no paths or file inventory.
+- `Gallery/<category>/<id>/symbol.json`: version, kind, description, tags,
+  ordering, controls/defaults and optional parts/output defaults. `renderer`
+  optionally points to a Python owner symbol; locations derive from the catalog.
+- `render.py`: trusted Python geometry; `source.svg`: sanitized static vector.
+- `Gallery/common.py`, `settings.json`, `color_sets.json`: shared source data.
+- `engine/gallery.py`: metadata validation and lazy renderer loading.
+- `engine/service.py`: normalize recipes, customize and render SVG; catalog changes
+  invalidate metadata and renderer imports without a server restart.
+- `engine/png.py`: CairoSVG using the active Conda interpreter’s `Library/bin` on Windows;
+  PNG exports retain embedded SVG license notices as Description metadata.
+- `cli/manage.py`: Python registration and scaffolding.
+- `cli/operations.py`, `trash.py`, `archives.py`, `storage.py`: shared management,
+  active ZIPs, category-organized trash and staged publication.
+- `cli/api.py`: HTTP payload adapter to the same parsed CLI commands.
+- `app/`: presentation, transient customization drafts and API calls, no persistent
+  browser collection. Saved favorites are symbol configuration on disk.
+
+Writes take the existing cooperative lock, validate candidates in temporary
+Galleries and publish through rollback-capable atomic file replacement. The catalog
+is published last as the cache revision. This is not a crash-proof database or a
+Python sandbox. Inputs and local-origin boundaries remain validated.
+
+## HTTP contract
+
+Server binds loopback only, default `127.0.0.1:9178`. Host and Origin must match its
+actual local port. Assets are served directly from an explicit app-file allowlist.
+Responses are not cached. JSON POST requests require `Content-Type: application/json`.
+
+| Endpoint | Response |
+|---|---|
+| `GET /api/health` | app, version, Python PNG availability |
+| `GET /api/gallery` | settings, categories, palettes, full symbols metadata, catalog revision |
+| `GET /api/trash` | entries and entry_count; entries have kind symbol/category/snapshot |
+| `GET /api/backup` | ZIP bytes rooted at Gallery/ |
+| `POST /api/render` | Existing render/export/validate_recipe protocol |
+| `POST /api/png` | `{asset, options, scale}` to Python PNG bytes |
+| `POST /api/manage` | Schema-2 command envelope |
+
+Management bodies contain `action` using CLI hyphenated names, singular `id` or
+batch `ids`, plus relevant metadata (`name`, `category`, `description`, `tags`,
+`style`, `icon`, `order`). Optional booleans: `dry_run`, `yes`, `force`, `force_sync`.
+`update-symbol` accepts boolean `favorite`. File inputs are contents, never host
+filesystem paths: `svg` text, `script` text, `spec` object, `recipe` object,
+`archive` base64 ZIP. Backup is the GET endpoint, not an arbitrary server output path.
+
+Examples:
+
+```json
+{"action":"move-symbol","ids":["chip"],"category":"uncategorized","dry_run":true}
 ```
 
-There is no composition model. A render request carries one asset's `type`, `params`, `parts` and optional imported SVG, plus export options. Asset recipes and personal Gallery backups remain versioned separately from application releases.
+```json
+{"action":"import-svg","id":"square","name":"Square","svg":"<svg xmlns=\"http://www.w3.org/2000/svg\"><rect width=\"20\" height=\"20\"/></svg>"}
+```
 
-## Module boundaries
+The browser refreshes metadata every two seconds and on focus. Thumbnails/drafts
+are invalidated when metadata changes. Management mutations refresh immediately.
+Python renderers imported through either interface execute with local permissions;
+the UI requires trust confirmation before Python or ZIP import.
 
-`Gallery/` contains data and trusted geometry plugins. The catalog is `Gallery/catalog.json`: category presentation metadata and symbol `id`, `name`, `category`, `style`. Each `Gallery/<category>/<id>/` holds `symbol.json` (controls, defaults and descriptive metadata) and `render.py` (geometry). Shared helpers live in `Gallery/common.py`. Renderer reuse references the owning symbol ID. Missing categories default to `uncategorized`; unknown explicit categories are rejected. `engine/gallery.py` validates definitions, returns metadata without importing renderer modules, and imports a renderer on its first actual use. Builders are cached for that process.
+## Trash and ZIPs
 
-`engine/primitives.py` implements shared SVG shapes and part overrides. `engine/service.py` normalizes browser requests and renders one symbol. `engine/sanitize.py` handles static SVG imports. The CLI adds stricter input validation in `cli/customize.py` so malformed agent parameters are rejected instead of being clamped like interactive sliders.
+Trash entry records contain original catalog/category metadata and deletion time,
+plus the retained symbol sources under `Gallery/.trash/<category>/<trash-id>/`.
+Snapshots are separate entries under `.trash/snapshots/` with an active Gallery copy.
+No file inventories or checksums are generated. Trash is ignored by Git.
 
-`cli/main.py` provides the one-action command interface and machine-result envelope. `cli/manage.py` implements scaffolding, staging and source registration. `cli/validator.py` validates source additions in a timed subprocess. `cli/common.py` handles file I/O, no-clobber checks, source history and the cooperative writer lock.
-
-`build.py` validates/loads source and produces `index.html`. It embeds the same engine, Gallery Python files and JSON consumed by CPython. `app/runtime.js` prefers the local server and otherwise loads Pyodide. Icon geometry is not reimplemented in JavaScript. A module-worker compatibility path can use the same Python runtime on the main thread.
-
-`server.py` serves the application on loopback and exposes health, render and optional PNG endpoints. It checks local Host/Origin values and does not provide remote source registration. The CLI is the persistent source-management interface; the browser does not execute arbitrary uploaded Python.
-
-## Updates and data ownership
-
-Source additions go to `Gallery/`. CLI calls read fresh metadata on each invocation. Browser HTML and long-lived server state are generated/cached, so rebuild the HTML and restart the server after source changes. The generated HTML remains a distribution artifact, not a file to edit manually.
-
-Browser-added personal variants, favorites, categories and sanitized SVG imports remain in local browser storage and backup JSON. They are not source registrations and are not enumerated by the CLI. Browser asset recipes can be exported and passed to `--recipe` when their referenced source symbol is available.
-
-Recipes remain `svgdrawer.asset`, schema 1, with legacy `vector-foundry.asset` support. Libraries now use `svgdrawer.library`, schema 2, and a `symbols` collection. Schema-1 SVGDrawer/vector-foundry libraries convert on read. The browser prefers `svgdrawer.gallery.v2`, then reads earlier SVGDrawer/vector-foundry keys on the same origin; it writes only the new key after successful validation and never deletes the original data. `tools/migrate_v1.py` still converts the earlier drawing-editor presets to collection backups, dropping layout coordinates rather than reintroducing a canvas.
-
-## Source mutation safeguards
-
-A registration obtains `Gallery/.write.lock`, validates in a temporary project, retains old versions under `.history/`, and publishes complete source files with the catalog last. Write errors trigger in-process rollback. Source updates are not a database transaction and cannot promise crash consistency across files. The lock is local and cooperative; external manual edits bypass it. Never remove a lock while its writer is alive.
-
-Export-file no-clobber checks are separate: output replacements require explicit `--force`, but do not get source-history backups. PNG failure can leave an already-produced SVG and recipe. This is intentional and is reflected in CLI errors.
-
-Python scripts run with the current process's permissions. Temporary validation directories and timeouts are correctness aids, not isolation from the host. Only reviewed code should be registered; a separate operating-system sandbox is needed for untrusted code.
-
-## Compatibility scope
-
-Local development, CLI and launchers support Windows with Python 3.10+. The standalone HTML still runs the shared Python engine in Pyodide. The included verification was run with the environment versions recorded in `docs/VERIFICATION.json`, not evidence of current Windows verification. Browser geometry uses Pyodide; terminal PNG uses optional CairoSVG/Cairo. Text rendering depends on available fonts. Scripts with third-party or OS-only dependencies are not guaranteed to run in the single HTML.
+Backups exclude trash/history/caches/locks. Additive import preserves local global
+files and checks owner/helper byte equality before reusing them. Full sync and
+snapshot restoration preserve existing trash and snapshot the displaced active
+Gallery. Batch dependency or identity errors leave active content unchanged.

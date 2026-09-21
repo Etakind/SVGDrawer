@@ -1,4 +1,3 @@
-# Optional browser tests (unit tests use only unittest from the standard library).
+# Optional test extras for an activated Conda environment.
+# Runtime dependencies (including Pillow/CairoSVG) belong to environment.yml.
 playwright>=1.50,<2
-Pillow>=10,<13
-cairosvg>=2.8.2,<3

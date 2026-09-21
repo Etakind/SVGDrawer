@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "version": 1,
+  "kind": "svg",
+  "description": "Processor package with three fixed contacts on each side.",
+  "tags": [
+    "cpu",
+    "processor",
+    "twelve contacts",
+    "top view",
+    "lucide",
+    "outline"
+  ],
+  "order": 300,
+  "controls": [],
+  "defaults": {
+    "fill": "#DCEBFF",
+    "accent": "#2878D4",
+    "stroke": "#193E5B",
+    "highlight": "#FFFFFF",
+    "stroke_width": 5,
+    "radius": 7
+  },
+  "source": {
+    "collection": "lucide",
+    "icon": "cpu",
+    "url": "https://github.com/lucide-icons/lucide/blob/main/icons/cpu.svg",
+    "discovery_url": "https://www.freeicons.org/icons/lucide",
+    "license": "ISC / MIT",
+    "license_url": "https://github.com/lucide-icons/lucide/blob/main/LICENSE"
+  }
+}

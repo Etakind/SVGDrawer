@@ -1,7 +1,6 @@
 """Standard-library tests for gallery integrity, geometry, imports and portable data."""
 from __future__ import annotations
 import copy
-import json
 from pathlib import Path
 import sys
 import unittest
@@ -9,12 +8,8 @@ import xml.etree.ElementTree as ET
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from engine import gallery, handle_request, render_asset
 from engine.gallery import validate_spec
-from engine.service import normalize_asset, validate_library
+from engine.service import normalize_asset
 from engine.sanitize import safe_import
-
-
-def library():
-    return dict(format='svgdrawer.library', schema_version=2, categories=[], symbols=[], favorites=[])
 
 
 class GalleryTests(unittest.TestCase):
@@ -137,26 +132,7 @@ class ImportTests(unittest.TestCase):
         with self.assertRaises(ValueError):safe_import('<svg>'+'<rect/>'*3001+'</svg>')
 
 
-class LibraryTests(unittest.TestCase):
-    def custom_library(self):
-        lib=library();lib['categories']=[dict(id='science',name='Science')]
-        lib['symbols']=[dict(id='my-chip',name='My chip',category='science',asset={'type':'chip','params':{'pins':9}},tags=['research'])]
-        lib['favorites']=['chip','my-chip','not-there'];return lib
-
-    def test_versioned_backup_round_trip(self):
-        first=validate_library(self.custom_library());self.assertEqual(first,validate_library(first))
-        self.assertEqual(first['favorites'],['chip','my-chip'])
-        self.assertEqual(first['symbols'][0]['asset']['params']['pins'],9)
-
-    def test_imported_backup_is_idempotent(self):
-        lib=self.custom_library();lib['symbols'][0]['asset']={'type':'custom','raw_svg':ImportTests.SAMPLE}
-        first=validate_library(lib);self.assertEqual(first,validate_library(first))
-
-    def test_bad_references_and_versions_rejected(self):
-        for mutation in [lambda l:l.update(schema_version=88),lambda l:l['symbols'][0].update(category='nope'),lambda l:l['symbols'].append(copy.deepcopy(l['symbols'][0])),lambda l:l['symbols'][0]['asset'].update(type='missing'),lambda l:l['categories'].append(dict(id='hardware',name='Hardware'))]:
-            lib=self.custom_library();mutation(lib)
-            with self.assertRaises(ValueError):validate_library(lib)
-
+class RecipeTests(unittest.TestCase):
     def test_recipe_round_trip(self):
         recipe={'format':'svgdrawer.asset','schema_version':1,'name':'My waveform','asset':{'type':'waveform','params':{'cycles':7,'wave_type':'sine'}},'output':{'width':600,'height':300}}
         result=handle_request({'action':'validate_recipe','recipe':recipe})

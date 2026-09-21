@@ -1,13 +1,14 @@
 {
   "schema_version": 1,
-  "version": 1,
+  "version": 2,
   "description": "A processor with individually editable pins and a labeled core.",
   "tags": [
     "ai",
     "processor",
     "cpu",
     "microchip",
-    "pins"
+    "pins",
+    "AI chip"
   ],
   "order": 0,
   "defaults": {

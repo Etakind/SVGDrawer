@@ -4,18 +4,18 @@
   "version": "3.0.0",
   "released": "2026-09-19",
   "cli_entrypoint": "svgdrawer.py",
-  "browser_entrypoint": "index.html",
+  "browser_entrypoint": "http://127.0.0.1:9178/",
   "source_gallery": "Gallery/",
-  "build_command": "python svgdrawer.py --build",
   "package_command": "python tools/package_release.py --output-dir dist",
   "schema_versions": {
     "recipe": 1,
-    "personal_library": 2,
     "cli_result": 2,
     "symbol": 1
   },
   "categories": 6,
   "verification_report": "docs/VERIFICATION.json",
-  "symbols": 33,
-  "verification_note": "The referenced report is historical and does not verify the current source."
+  "symbols": 57,
+  "verification_note": "The referenced report is historical and does not verify the current source.",
+  "server_command": "python start.py",
+  "environment": "environment.yml"
 }

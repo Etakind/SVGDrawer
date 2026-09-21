@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "version": 1,
+  "kind": "svg",
+  "description": "Two horizontal server bays, each with a status indicator.",
+  "tags": [
+    "server",
+    "hosting",
+    "two bays",
+    "tabler",
+    "outline"
+  ],
+  "order": 315,
+  "controls": [],
+  "defaults": {
+    "fill": "#DCEBFF",
+    "accent": "#2878D4",
+    "stroke": "#193E5B",
+    "highlight": "#FFFFFF",
+    "stroke_width": 5,
+    "radius": 7
+  },
+  "source": {
+    "collection": "tabler",
+    "icon": "server",
+    "url": "https://github.com/tabler/tabler-icons/blob/main/icons/outline/server.svg",
+    "discovery_url": "https://www.freeicons.org/icons/tabler-icons",
+    "license": "MIT",
+    "license_url": "https://github.com/tabler/tabler-icons/blob/main/LICENSE"
+  }
+}
